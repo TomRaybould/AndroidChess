@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 
 public class gamestage extends AppCompatActivity {
+    private View selectedView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +28,21 @@ public class gamestage extends AppCompatActivity {
         gridview.setAdapter(gameDrawer);
         System.out.println("poop5");
 
-        //selected.setBackgroundColor(Color.rgb(255, 0, 0));
 
-        //System.out.println("poop3");
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                v.setBackgroundColor(Color.rgb(255, 0, 0));
+                if(v.equals(selectedView)){
+                    return;
+                }
+                else{
+                    if(selectedView!=null){
+                        selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    }
+                    v.setBackgroundColor(Color.rgb(255, 0, 0));
+                    selectedView=v;
+                }
+
                 Toast.makeText(gamestage.this, "" + position,
                         Toast.LENGTH_SHORT).show();
             }

@@ -43,7 +43,7 @@ public class ImageAdapter extends BaseAdapter {
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(4, 4, 4, 4);
+                imageView.setPadding(5, 5, 5, 5);
                 imageView.setBackgroundColor(Color.rgb(0, 0, 0));
                 Pieces.add(imageView);
                 System.out.println("In here");
@@ -52,7 +52,7 @@ public class ImageAdapter extends BaseAdapter {
                 imageView = (ImageView) convertView;
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(4, 4, 4, 4);
+                imageView.setPadding(5, 5, 5, 5);
                 imageView.setBackgroundColor(Color.rgb(0, 0, 0));
                 Pieces.add(imageView);
             }
