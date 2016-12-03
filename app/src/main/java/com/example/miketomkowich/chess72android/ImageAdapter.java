@@ -22,25 +22,29 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         public Object getItem(int position) {
-            return null;
+            return mThumbIds[position];
         }
 
         public long getItemId(int position) {
-            return 0;
+            return mThumbIds[position];
         }
 
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
+
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+                imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(1, 1, 1, 1);
+                imageView.setPadding(0, 0, 0, 0);
                 System.out.println("In here");
             } else {
                 imageView = (ImageView) convertView;
+                imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(0, 0, 0, 0);
             }
 
             imageView.setImageResource(mThumbIds[position]);
@@ -97,15 +101,6 @@ public class ImageAdapter extends BaseAdapter {
         return mThumbIds;
     }*/
    private Integer[] mThumbIds = {
-            R.drawable.black_knight, R.drawable.black_rook,
-            R.drawable.black_bishop, R.drawable.black_king,
-            R.drawable.black_queen, R.drawable.black_bishop,
-            R.drawable.black_rook, R.drawable.black_knight,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            /////////////////////////////////////////////////
             R.drawable.blacksquare, R.drawable.yellowsquare,
             R.drawable.blacksquare, R.drawable.yellowsquare,
             R.drawable.blacksquare, R.drawable.yellowsquare,
@@ -133,5 +128,15 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.yellowsquare, R.drawable.blacksquare,
             R.drawable.yellowsquare, R.drawable.blacksquare,
             /////////////////////////////////////////////////
+            R.drawable.blacksquare, R.drawable.yellowsquare,
+            R.drawable.blacksquare, R.drawable.yellowsquare,
+            R.drawable.blacksquare, R.drawable.yellowsquare,
+            R.drawable.blacksquare, R.drawable.yellowsquare,
+            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.yellowsquare, R.drawable.blacksquare,
+            /////////////////////////////////////////////////
+
     };
 }
