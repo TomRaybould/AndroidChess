@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:columnWidth="0dp"
     android:numColumns="8"
-    android:verticalSpacing="1dp"
-    android:horizontalSpacing="1dp"
+    android:verticalSpacing="0dp"
+    android:horizontalSpacing="0dp"
     android:stretchMode="columnWidth"
-    android:gravity="center"
+    android:gravity="center_vertical"
     />
 

@@ -38,13 +38,13 @@ public class ImageAdapter extends BaseAdapter {
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(0, 0, 0, 0);
+                imageView.setPadding(1, 1, 1, 1);
                 System.out.println("In here");
             } else {
                 imageView = (ImageView) convertView;
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(0, 0, 0, 0);
+                imageView.setPadding(1, 1, 1, 1);
             }
 
             imageView.setImageResource(mThumbIds[position]);
@@ -89,10 +89,10 @@ public class ImageAdapter extends BaseAdapter {
         mThumbIds = new Integer[63];
         for(int h = 0; h < i.length; h++){
             if(i[h] == 0){
-                mThumbIds[h] = R.drawable.yellowsquare;
+                mThumbIds[h] = R.drawable.white_space;
             }
             else if(i[h] == 1){
-                mThumbIds[h] = R.drawable.blacksquare;
+                mThumbIds[h] = R.drawable.black_space;
             }
             else if(i[h] == 2){
                 mThumbIds[h] = R.drawable.black_bishop;///sample for now
@@ -101,41 +101,41 @@ public class ImageAdapter extends BaseAdapter {
         return mThumbIds;
     }*/
    private Integer[] mThumbIds = {
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
             /////////////////////////////////////////////////
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
             /////////////////////////////////////////////////
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
             /////////////////////////////////////////////////
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.blacksquare, R.drawable.yellowsquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
-            R.drawable.yellowsquare, R.drawable.blacksquare,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.black_space, R.drawable.white_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
+            R.drawable.white_space, R.drawable.black_space,
             /////////////////////////////////////////////////
 
     };
