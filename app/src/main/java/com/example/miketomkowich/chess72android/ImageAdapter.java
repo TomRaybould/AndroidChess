@@ -6,12 +6,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.graphics.Color;
+
+import java.util.ArrayList;
 
 /**
  * Created by mike.tomkowich on 12/2/16.
  */
 public class ImageAdapter extends BaseAdapter {
         private Context mContext;
+
+        public ArrayList<ImageView> Pieces= new ArrayList<ImageView>();
 
         public ImageAdapter(Context c) {
             mContext = c;
@@ -26,7 +31,7 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         public long getItemId(int position) {
-            return mThumbIds[position];
+            return position;
         }
 
         // create a new ImageView for each item referenced by the Adapter
@@ -38,13 +43,18 @@ public class ImageAdapter extends BaseAdapter {
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(1, 1, 1, 1);
+                imageView.setPadding(4, 4, 4, 4);
+                imageView.setBackgroundColor(Color.rgb(0, 0, 0));
+                Pieces.add(imageView);
                 System.out.println("In here");
+                System.out.println(Pieces.size());
             } else {
                 imageView = (ImageView) convertView;
                 imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(1, 1, 1, 1);
+                imageView.setPadding(4, 4, 4, 4);
+                imageView.setBackgroundColor(Color.rgb(0, 0, 0));
+                Pieces.add(imageView);
             }
 
             imageView.setImageResource(mThumbIds[position]);
