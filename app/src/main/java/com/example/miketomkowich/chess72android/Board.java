@@ -21,6 +21,7 @@ public class Board {
 		return this.board;  
 	}
 
+
 	/**
 	   * This method returns whether a space is a possible location on the board
 	   * if the row or column is greater then 7 or less then 0 it returns false

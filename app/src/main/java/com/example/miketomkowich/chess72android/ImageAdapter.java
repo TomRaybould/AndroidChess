@@ -38,6 +38,7 @@ public class ImageAdapter extends BaseAdapter {
                 imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(1, 1, 1, 1);
+                System.out.println("In here");
             } else {
                 imageView = (ImageView) convertView;
             }
@@ -45,7 +46,57 @@ public class ImageAdapter extends BaseAdapter {
             imageView.setImageResource(mThumbIds[position]);
             return imageView;
         }
-    private Integer[] mThumbIds = {
+   /* private int[] convertBoard(Board b) {
+        Piece[][] board = b.getBoard();
+        int[] data = new int[63];
+        int k=-1;
+        for(int i= 7; i >= 0; i--){
+            for(int j=0; j < 8; j++){
+                k++;
+                if(board[i][j]==null){
+                    if(i%2==0&&j%2==0){
+                        data[k] = 0; //yellow
+                    }
+                    else if(i%2==0&&j%2!=0){
+                        data[k] = 1; // black
+                    }
+                    else if(i%2!=0&&j%2==0){
+                        data[k] = 1; //black
+                    }
+                    else if(i%2!=0&&j%2!=0){
+                        data[k] = 0; // yellow
+                    }
+                }
+                else{
+                    data[k] =2; // piece
+                }
+            }//end of col in row
+            System.out.println((i+1));
+        }//end of rows
+        System.out.print(" ");
+        for(char c='a';c<'i';c++){
+            System.out.print(c+"  ");
+        }
+        System.out.println();
+        System.out.println();
+        return data;
+    }*/
+  /*  public Integer[] fillMThumbIDs(int[] i){
+        mThumbIds = new Integer[63];
+        for(int h = 0; h < i.length; h++){
+            if(i[h] == 0){
+                mThumbIds[h] = R.drawable.yellowsquare;
+            }
+            else if(i[h] == 1){
+                mThumbIds[h] = R.drawable.blacksquare;
+            }
+            else if(i[h] == 2){
+                mThumbIds[h] = R.drawable.black_bishop;///sample for now
+            }
+        }
+        return mThumbIds;
+    }*/
+   private Integer[] mThumbIds = {
             R.drawable.black_knight, R.drawable.black_rook,
             R.drawable.black_bishop, R.drawable.black_king,
             R.drawable.black_queen, R.drawable.black_bishop,

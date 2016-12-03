@@ -11,7 +11,6 @@ public abstract class Piece {
 		private char color;
 		private int moveCounter;//count of times the piece have moved 
 		private int row, col; //x and y coordinates of piece
-
 	public Piece(String pieceName, int row, int col, char color) {
 		this.row = row;
 		this.col = col;
