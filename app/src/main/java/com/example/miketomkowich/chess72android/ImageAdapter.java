@@ -1,6 +1,8 @@
 package com.example.miketomkowich.chess72android;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Interpolator;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +49,22 @@ public class ImageAdapter extends BaseAdapter {
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imageView;
-
+            int scaleH=0;
+            int scaleW=0;
+            if(mContext.getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT){
+                scaleH=parent.getHeight()/8;
+                scaleW=parent.getWidth()/8;
+            }
+            else{
+                scaleH=parent.getHeight() / 8;
+                scaleW=parent.getWidth() / 8;
+            }
             if (convertView == null) {
+
                 // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setLayoutParams(new GridView.LayoutParams(scaleW, scaleH));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(5, 5, 5, 5);
                 imageView.setBackgroundColor(Color.rgb(0, 0, 0));
                 Pieces.add(imageView);
@@ -60,8 +72,8 @@ public class ImageAdapter extends BaseAdapter {
                 System.out.println(Pieces.size());
             } else {
                 imageView = (ImageView) convertView;
-                imageView.setLayoutParams(new GridView.LayoutParams(parent.getWidth()/8, parent.getWidth()/8));
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setLayoutParams(new GridView.LayoutParams(scaleW, scaleH));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(5, 5, 5, 5);
                 imageView.setBackgroundColor(Color.rgb(0, 0, 0));
                 Pieces.add(imageView);
