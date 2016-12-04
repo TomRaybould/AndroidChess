@@ -1,5 +1,7 @@
 package com.example.miketomkowich.chess72android;
 
+import java.util.ArrayList;
+
 /**
 * Board is a class that holds the game board. Boardis responsible for printing the chess board 
 * array for the boards current state on each turn. It also has a method that makes sure that a 
@@ -43,27 +45,56 @@ public class Board {
 	   * This method prints the current state of the game board to the console
 	   * @return void
 	*/
+
+	/*
+		important notation!
+		white space =ws
+		black space =bs
+
+		example white rook on black space = wRbs
+
+	*/
 	
-	public void printBoard(){
+	public ArrayList<String> printBoard(){
+
+		ArrayList<String> pieceCodes= new ArrayList<String>();
+
 		for(int i= 7; i >= 0; i--){
 			for(int j=0; j < 8; j++){
 				
 				if(board[i][j]==null){
 					if(i%2==0&&j%2==0){
 						System.out.print("## ");
+						pieceCodes.add("bs");
 					}
 					else if(i%2==0&&j%2!=0){
 						System.out.print("   ");
+						pieceCodes.add("ws");
 					}
 					else if(i%2!=0&&j%2==0){
 						System.out.print("   ");
+						pieceCodes.add("ws");
 					}
 					else if(i%2!=0&&j%2!=0){
 						System.out.print("## ");
+						pieceCodes.add("bs");
 					}
 				}
 				else{
-					System.out.print(board[i][j]+" ");
+
+					System.out.print(board[i][j].toString()+" ");
+					if(i%2==0&&j%2==0){
+						pieceCodes.add(board[i][j].toString()+"bs");
+					}
+					else if(i%2==0&&j%2!=0){
+						pieceCodes.add(board[i][j].toString()+"ws");
+					}
+					else if(i%2!=0&&j%2==0){
+						pieceCodes.add(board[i][j].toString()+"ws");
+					}
+					else if(i%2!=0&&j%2!=0){
+						pieceCodes.add(board[i][j].toString()+"bs");
+					}
 				}
 			}//end of col in row
 			System.out.println((i+1));
@@ -74,7 +105,10 @@ public class Board {
 		}
 		System.out.println();
 		System.out.println();
+		System.out.println(pieceCodes.size());
+		return pieceCodes;
+
 	}//end of print board
-	
+
 
 }//end of board

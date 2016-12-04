@@ -1,6 +1,7 @@
 package com.example.miketomkowich.chess72android;
 
 import android.content.Context;
+import android.graphics.Interpolator;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,17 +10,26 @@ import android.widget.ImageView;
 import android.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 /**
  * Created by mike.tomkowich on 12/2/16.
  */
+
+
+
 public class ImageAdapter extends BaseAdapter {
         private Context mContext;
+        private Chess game;
+        private Integer[] mThumbIds = {};
 
         public ArrayList<ImageView> Pieces= new ArrayList<ImageView>();
 
-        public ImageAdapter(Context c) {
-            mContext = c;
+        public ImageAdapter(Context c, Chess game) {
+            this.mContext = c;
+            this.game = game;
+            updateFromBackEnd(this.game.getBoard());
         }
 
         public int getCount() {
@@ -60,7 +70,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView.setImageResource(mThumbIds[position]);
             return imageView;
         }
-   /* private int[] convertBoard(Board b) {
+        /* private int[] convertBoard(Board b) {
         Piece[][] board = b.getBoard();
         int[] data = new int[63];
         int k=-1;
@@ -95,6 +105,8 @@ public class ImageAdapter extends BaseAdapter {
         System.out.println();
         return data;
     }*/
+
+
   /*  public Integer[] fillMThumbIDs(int[] i){
         mThumbIds = new Integer[63];
         for(int h = 0; h < i.length; h++){
@@ -110,43 +122,63 @@ public class ImageAdapter extends BaseAdapter {
         }
         return mThumbIds;
     }*/
-   private Integer[] mThumbIds = {
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            /////////////////////////////////////////////////
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            /////////////////////////////////////////////////
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            /////////////////////////////////////////////////
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.black_space, R.drawable.white_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            R.drawable.white_space, R.drawable.black_space,
-            /////////////////////////////////////////////////
 
-    };
+   public void swapIndexs(int post1,int post2){
+       Integer temp =this.mThumbIds[post1];
+       mThumbIds[post1]= mThumbIds[post2];
+       mThumbIds[post2]=temp;
+       notifyDataSetChanged();
+   }
+
+    public void updateFromBackEnd(Board gameBoard){
+        System.out.println("In update from back end");
+        HashMap<String, Integer> pieceCodeID= new HashMap<String, Integer>();
+
+        pieceCodeID.put("ws",R.drawable.white_space);
+        pieceCodeID.put("bs",R.drawable.black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bRws",R.drawable.black_rook_white_space);
+        pieceCodeID.put("bRbs",R.drawable.black_rook_black_space);
+        pieceCodeID.put("wRws",R.drawable.white_rook_white_space);
+        pieceCodeID.put("wRbs",R.drawable.white_rook_black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bNws",R.drawable.black_knight_white_space);
+        pieceCodeID.put("bNbs",R.drawable.black_knight_black_space);
+        pieceCodeID.put("wNws",R.drawable.white_knight_white_space);
+        pieceCodeID.put("wNbs",R.drawable.white_knight_black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bBws",R.drawable.black_bishop_white_space);
+        pieceCodeID.put("bBbs",R.drawable.black_bishop_black_space);
+        pieceCodeID.put("wBws",R.drawable.white_bishop_white_space);
+        pieceCodeID.put("wBbs",R.drawable.white_bishop_black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bQws",R.drawable.black_queen_white_space);
+        pieceCodeID.put("bQbs",R.drawable.black_queen_black_space);
+        pieceCodeID.put("wQws",R.drawable.white_queen_white_space);
+        pieceCodeID.put("wQbs",R.drawable.white_queen_black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bKws",R.drawable.black_king_white_space);
+        pieceCodeID.put("bKbs",R.drawable.black_king_black_space);
+        pieceCodeID.put("wKws",R.drawable.white_king_white_space);
+        pieceCodeID.put("wKbs",R.drawable.white_king_black_space);
+        /////////////////////////////////////////////////
+        pieceCodeID.put("bPws",R.drawable.black_pawn_white_space);
+        pieceCodeID.put("bPbs",R.drawable.black_pawn_black_space);
+        pieceCodeID.put("wPws",R.drawable.white_pawn_white_space);
+        pieceCodeID.put("wPbs",R.drawable.white_pawn_black_space);
+
+        Integer[] results= new Integer[64];
+
+        ArrayList<String> pieceCodes= gameBoard.printBoard();
+        System.out.print(pieceCodes.size());
+
+        int count= 0;
+
+        for(String pc: pieceCodes){
+            results[count]=pieceCodeID.get(pc);
+            count++;
+        }
+        this.mThumbIds=results;
+    }
+
 }

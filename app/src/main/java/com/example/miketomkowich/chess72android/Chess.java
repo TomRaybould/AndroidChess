@@ -13,7 +13,7 @@ public class Chess {
 		private Board board;
 		private boolean isGameOver; //set to false when game is ready
 		private static int globalCount = 0;
-		int draw;
+		int draw=0;
 		static boolean endGameWithDraw = false;
 		static boolean endGameWithResign = false;
 		
@@ -23,6 +23,9 @@ public class Chess {
 		this.board = b;
 		this.isGameOver = false;
 	}
+	public Board getBoard(){
+		return this.board;
+	}
 	
 	public static void main(String[] args) {
 		
@@ -31,8 +34,7 @@ public class Chess {
 		Player player2= new Player(b,'b');
 		player1.setOpponent(player2);
 		player2.setOpponent(player1);
-		
-		Chess game= new Chess(player1 , player2, b);
+		Chess game= new Chess(player1 , player2, b );
 		
 		b.printBoard();
 		// main game loop
