@@ -1,16 +1,14 @@
 package com.example.miketomkowich.chess72android;
 
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
-
 
 public class gamestage extends AppCompatActivity {
     private View selectedView;
@@ -25,6 +23,11 @@ public class gamestage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+      //  ActionBar ab = getSupportActionBar();
+     //   ab.setDisplayHomeAsUpEnabled(true);
 
         boolean newGame = true;
 
@@ -69,6 +72,8 @@ public class gamestage extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+
         /*
         while(!this.game.isGameOver){
 
@@ -162,6 +167,9 @@ public class gamestage extends AppCompatActivity {
         */
 
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
 }
