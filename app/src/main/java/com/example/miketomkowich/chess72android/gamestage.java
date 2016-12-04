@@ -2,6 +2,7 @@ package com.example.miketomkowich.chess72android;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -26,8 +27,15 @@ public class gamestage extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-      //  ActionBar ab = getSupportActionBar();
-     //   ab.setDisplayHomeAsUpEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if(ab == null){
+            Toast.makeText(gamestage.this, "popp",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+     //
 
         boolean newGame = true;
 
