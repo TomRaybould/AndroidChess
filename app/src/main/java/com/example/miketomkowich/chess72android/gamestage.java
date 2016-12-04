@@ -24,16 +24,18 @@ public class gamestage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_gamestage);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
         if(ab == null){
-            Toast.makeText(gamestage.this, "popp",
+            Toast.makeText(gamestage.this, "poop",
                     Toast.LENGTH_SHORT).show();
         }
         else{
             ab.setDisplayHomeAsUpEnabled(true);
+            Toast.makeText(gamestage.this, "we gucci",
+                    Toast.LENGTH_SHORT).show();
         }
      //
 

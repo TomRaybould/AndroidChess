@@ -9,8 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".gamestage">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".gamestage"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
