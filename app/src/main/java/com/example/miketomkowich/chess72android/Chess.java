@@ -8,20 +8,24 @@ import java.util.Scanner;
 * @author  Tom Raybould & Mike Tomkowich
 */
 public class Chess {
-		private Player playerWhite;
-		private Player playerBlack;
-		private Board board;
-		private boolean isGameOver; //set to false when game is ready
-		private static int globalCount = 0;
-		int draw=0;
-		static boolean endGameWithDraw = false;
-		static boolean endGameWithResign = false;
+		protected Player playerWhite;
+		protected Player playerBlack;
+		protected Board board;
+		protected boolean isGameOver; //set to false when game is ready
+		protected int globalCount;
+		protected int draw;
+		protected boolean endGameWithDraw;
+		protected boolean endGameWithResign;
 		
 	public Chess(Player white, Player black, Board b) {
 		this.playerWhite = white;
 		this.playerBlack = black;
 		this.board = b;
 		this.isGameOver = false;
+		this.globalCount = 0;
+		this.draw=0;
+		this.endGameWithDraw=false;
+		this.endGameWithResign=false;
 	}
 	public Board getBoard(){
 		return this.board;
@@ -67,17 +71,17 @@ public class Chess {
 				b.printBoard();
 				
 			}
-			if(endGameWithResign){
+			if(game.endGameWithResign){
 				System.out.println("White has Resigned");
 				game.isGameOver=true;
 				break;
 			}
-			if(endGameWithDraw){
+			if(game.endGameWithDraw){
 				System.out.println("White has accepted Draw: Game over");
 				game.isGameOver=true;
 				break;
 			}
-			globalCount++;
+			game.globalCount++;
 			
 			
 			if(game.isGameOver){break;}//beginning of blacks turn
@@ -111,17 +115,17 @@ public class Chess {
 				System.out.println();
 				b.printBoard();
 			}
-			if(endGameWithResign){
+			if(game.endGameWithResign){
 				System.out.println("Black has Resigned");
 				game.isGameOver=true;
 				break;
 			}
-			if(endGameWithDraw){
+			if(game.endGameWithDraw){
 				System.out.println("Black has accepted Draw: Gameover");
 				game.isGameOver=true;
 				break;
 			}
-			globalCount++;
+			game.globalCount++;
 			
 		}//end of main game loop
 		sc.close();//close scanner when game is over
@@ -147,7 +151,7 @@ public class Chess {
 		 if(entry.length() != 5 || !Character.isAlphabetic(entry.charAt(0)) || !Character.isDigit(entry.charAt(1)) ||
 				 !Character.isAlphabetic(entry.charAt(3)) || !Character.isDigit(entry.charAt(4))){
 			 	if(entry.toLowerCase().equals("resign")){
-			 		endGameWithResign = true;
+			 		this.endGameWithResign = true;
 			 		return true;
 			 	}
 			 	else if (entry.length() == 7 && Character.isAlphabetic(entry.charAt(0)) && Character.isDigit(entry.charAt(1)) &&

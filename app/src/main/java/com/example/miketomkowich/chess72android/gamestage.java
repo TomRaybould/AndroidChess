@@ -12,10 +12,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-
 public class gamestage extends AppCompatActivity {
     private View selectedView;
-    private Integer selectedInt=0;
+    private Integer selectedInt1=-1;
+    private Integer selectedInt2=-1;
+
     private Chess game;
 
     public Chess getGame(){
@@ -37,15 +38,17 @@ public class gamestage extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_gamestage);
-      //  System.out.println("poop1");
+            //  System.out.println("poop1");
         final GridView gridview = (GridView) findViewById(R.id.gridview);
-       // System.out.println("poop2");
-          System.out.println("poop3");
+            // System.out.println("poop2");
+        System.out.println("poop3");
         System.out.println(this.game);
         ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
         System.out.println("poop4");
         gridview.setAdapter(gameDrawer);
         System.out.println("poop5");
+
+
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -60,16 +63,103 @@ public class gamestage extends AppCompatActivity {
                         selectedView.setBackgroundColor(Color.rgb(0,0,0));
                     }
                     v.setBackgroundColor(Color.rgb(255, 0, 0));
-
                     selectedView=v;
-
                 }
-
                 Toast.makeText(gamestage.this, "" + position,
                         Toast.LENGTH_SHORT).show();
             }
         });
+        /*
+        while(!this.game.isGameOver){
 
+            //Check for check mate or stale mate in player class set game over if check mate is true
+            if(this.game.playerWhite.isInCheckMate(game.board)){
+                game.isGameOver=true;
+                System.out.println("Checkmate");
+                System.out.println("Black wins");
+                break;
+            }
+            if(game.playerWhite.isInStaleMate(game.board)){
+                game.isGameOver=true;
+                System.out.println("Stalemate");
+                break;
+            }
+
+            if(game.playerWhite.isInCheck(game.board)){
+                System.out.println("Check");
+            }
+            boolean validInput=false;
+
+            while(!validInput){
+                //waits for valid input to be entered
+                while(selectedInt1==-1||selectedInt2==-1);
+
+                //asks for input and returns true if the move and input are valid
+                System.out.print("White's move: ");
+                //String entry = sc.nextLine();
+                validInput = game.handleTurn(game.playerWhite, entry);
+                System.out.println();
+                b.printBoard();
+
+            }
+            if(endGameWithResign){
+                System.out.println("White has Resigned");
+                game.isGameOver=true;
+                break;
+            }
+            if(endGameWithDraw){
+                System.out.println("White has accepted Draw: Game over");
+                game.isGameOver=true;
+                break;
+            }
+            globalCount++;
+
+
+            if(game.isGameOver){break;}//beginning of blacks turn
+
+
+            //Check for check mate or stale mate in player class set game over if check mate is true
+            if(game.playerBlack.isInCheckMate(game.board)){
+                System.out.println("Checkmate");
+                System.out.println("White wins");
+                game.isGameOver=true;
+                break;
+            }
+            if(game.playerBlack.isInStaleMate(game.board)){
+                System.out.println("Stalemate");
+                game.isGameOver=true;
+                break;
+            }
+            /// comment out for now
+            //checks if player is in check prints to screen
+            if(game.playerBlack.isInCheck(game.board)){
+                System.out.println("Check");
+            };
+
+            validInput=false;
+
+            while(!validInput){
+                //asks for input and returns true if the move and input are valid
+                System.out.print("Black's move: ");
+                String entry = sc.nextLine();
+                validInput = game.handleTurn(game.playerBlack, entry);
+                System.out.println();
+                b.printBoard();
+            }
+            if(endGameWithResign){
+                System.out.println("Black has Resigned");
+                game.isGameOver=true;
+                break;
+            }
+            if(endGameWithDraw){
+                System.out.println("Black has accepted Draw: Gameover");
+                game.isGameOver=true;
+                break;
+            }
+            globalCount++;
+
+        }//end of main game loop
+        */
 
 
     }
