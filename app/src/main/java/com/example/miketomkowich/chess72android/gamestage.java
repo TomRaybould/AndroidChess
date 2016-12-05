@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -178,8 +179,33 @@ public class gamestage extends AppCompatActivity {
 
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.poop:
+                Toast.makeText(this, "You pressed poop!",
+                        Toast.LENGTH_LONG).show();
+                break;
+
+
+            case R.id.fart:
+                //Intent intent=new Intent(HomePage.this,Setting.class);
+               // startActivity(intent);
+               // finish();
+                Toast.makeText(this, "You pressed fart!",
+                        Toast.LENGTH_LONG).show(); break;
+
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
-
 }
