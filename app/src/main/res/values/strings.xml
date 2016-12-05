@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Chess72Android</string>
+    <string name="title_activity_home__screen">Home_Screen</string>
 
 </resources>
