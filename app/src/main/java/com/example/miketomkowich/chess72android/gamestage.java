@@ -1,18 +1,21 @@
 package com.example.miketomkowich.chess72android;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import static android.view.Gravity.CENTER;
+
 public class gamestage extends AppCompatActivity {
+    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private View selectedView;
     private Integer selectedInt1=-1;
     private Integer selectedInt2=-1;
@@ -26,19 +29,27 @@ public class gamestage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamestage);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar ab = getSupportActionBar();
-        if(ab == null){
-            Toast.makeText(gamestage.this, "poop",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else{
-            ab.setDisplayHomeAsUpEnabled(true);
-            Toast.makeText(gamestage.this, "we gucci",
-                    Toast.LENGTH_SHORT).show();
-        }
+
      //
+        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        if (getSupportActionBar()!=null)
+        {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        }
+        ab.setDisplayShowCustomEnabled(true);
+        ab.setDisplayOptions(ab.DISPLAY_SHOW_CUSTOM);
+        ab.setCustomView(getLayoutInflater().inflate(R.layout.activity_gamestage, null),
+                new android.support.v7.app.ActionBar.LayoutParams(
+                        android.support.v7.app.ActionBar.LayoutParams.WRAP_CONTENT,
+                        android.support.v7.app.ActionBar.LayoutParams.MATCH_PARENT,
+                        CENTER
+                )
+        );
+        ab.setLogo(R.drawable.black_knight_black_space);
+        ab.setTitle("CHESS");
+        ab.setDisplayUseLogoEnabled(true);
+        ab.setDisplayHomeAsUpEnabled(true);
 
         boolean newGame = true;
 
@@ -176,36 +187,37 @@ public class gamestage extends AppCompatActivity {
 
         }//end of main game loop
         */
-
-
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_a, menu);
         return true;
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.poop:
-                Toast.makeText(this, "You pressed poop!",
-                        Toast.LENGTH_LONG).show();
-                break;
-
-
-            case R.id.fart:
-                //Intent intent=new Intent(HomePage.this,Setting.class);
-               // startActivity(intent);
-               // finish();
-                Toast.makeText(this, "You pressed fart!",
-                        Toast.LENGTH_LONG).show(); break;
-
-
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.ai) {
+            Toast.makeText(getApplicationContext(), "AI", Toast.LENGTH_SHORT).show();
         }
-
-        return super.onOptionsItemSelected(item);
+        else if(id == R.id.draw){
+            Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
+        }
+        else if(id == R.id.quit){
+            Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
+        }
+        else if(id == R.id.resign){
+            Toast.makeText(getApplicationContext(), "RESIGN", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+    public void sendMessage(View view) {
+        // Do something in response to button
+        Toast.makeText(getApplicationContext(), "switch screen was called", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, Home_Screen.class);
+        String message = "Will be Home Screen";
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 }

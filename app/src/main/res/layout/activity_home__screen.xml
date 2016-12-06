@@ -1,61 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_display_message"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.example.miketomkowich.chess72android.Home_Screen">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/PopupOverlay"
-            app:title="Home screen" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <Button
-        android:text="Quit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="16dp"
-        android:id="@+id/quit" />
-
-    <Button
-        android:text="New Game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/quit"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:id="@+id/new_game" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/appBarLayout3"
-        android:layout_toStartOf="@+id/new_game"
-        android:layout_marginTop="102dp"
-        android:scrollbars="horizontal|vertical"
-        android:id="@+id/old_game" />
-
-    <Button
-        android:text="Select Old Game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button9"
-        android:layout_above="@+id/quit"
-        android:layout_alignStart="@+id/quit" />
-
+    android:layout_height="match_parent">
 </RelativeLayout>
