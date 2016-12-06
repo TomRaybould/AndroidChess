@@ -3,9 +3,31 @@
     android:id="@+id/activity_display_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Switch screen button"
-        android:onClick="sendMessage" />
+        android:text="New game"
+        android:onClick="sendMessage"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/new_game" />
+
+    <Button
+        android:text="replay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/replay" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/replay"
+        android:layout_alignStart="@+id/replay"
+        android:layout_marginTop="23dp"
+        android:id="@+id/listView" />
+
 </RelativeLayout>

@@ -50,7 +50,6 @@ public class gamestage extends AppCompatActivity {
         ab.setTitle("CHESS");
         ab.setDisplayUseLogoEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-
         boolean newGame = true;
 
         if(newGame){//this will be set by the option the user picks in the previous screen
@@ -216,12 +215,13 @@ public class gamestage extends AppCompatActivity {
         }
         return true;
     }
-    public void sendMessage(View view) {
+   /* basis for sending messages and switching screens
+   public void sendMessage(View view) {
         // Do something in response to button
         Toast.makeText(getApplicationContext(), "switch screen was called", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, Home_Screen.class);
         String message = "Will be Home Screen";
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
-    }
+    }*/
 }

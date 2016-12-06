@@ -21,6 +21,4 @@
         android:title="Resign"
         android:icon="@drawable/black_space"
         app:showAsAction="never"></item>
-
-
 </menu>

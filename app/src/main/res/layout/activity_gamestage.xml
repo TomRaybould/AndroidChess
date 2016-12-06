@@ -20,13 +20,5 @@ android:paddingTop="@dimen/activity_vertical_margin">
     android:stretchMode="columnWidth"
     android:gravity="center_vertical"
     android:layout_alignParentStart="true" />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="CHESS" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Switch screen button"
-        android:onClick="sendMessage" />
+
 </RelativeLayout>
