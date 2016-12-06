@@ -206,6 +206,10 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.quit){
             Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Home_Screen.class);
+            String message = "Will be Home Screen";
+            intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
         }
         else if(id == R.id.resign){
             Toast.makeText(getApplicationContext(), "RESIGN", Toast.LENGTH_SHORT).show();
