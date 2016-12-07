@@ -32,13 +32,12 @@ public class gamestage extends AppCompatActivity {
 
      //
         android.support.v7.app.ActionBar ab = getSupportActionBar();
-        if (getSupportActionBar()!=null)
-        {
+        if (getSupportActionBar()==null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
-        ab.setDisplayShowCustomEnabled(true);
-        ab.setDisplayOptions(ab.DISPLAY_SHOW_CUSTOM);
+
+        ab.setDisplayHomeAsUpEnabled(true);
         ab.setCustomView(getLayoutInflater().inflate(R.layout.activity_gamestage, null),
                 new android.support.v7.app.ActionBar.LayoutParams(
                         android.support.v7.app.ActionBar.LayoutParams.WRAP_CONTENT,
@@ -46,8 +45,10 @@ public class gamestage extends AppCompatActivity {
                         CENTER
                 )
         );
+        ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.black_knight_black_space);
-        ab.setTitle("CHESS");
+        ab.setTitle("set game name here");
+        ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
         boolean newGame = true;
