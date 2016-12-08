@@ -145,7 +145,7 @@ public class Chess {
 	   * @param p The player whose turn it is in the game
 	   * @return boolean true only if the move and input were valid other wise returned false
 	*/	
-	private boolean handleTurn(Player p, String entry){
+	public boolean handleTurn(Player p, String entry){
 		 
 		 Piece promotion = null;
 		 if(entry.length() != 5 || !Character.isAlphabetic(entry.charAt(0)) || !Character.isDigit(entry.charAt(1)) ||

@@ -3,6 +3,7 @@ package com.example.miketomkowich.chess72android;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -53,14 +54,14 @@ public class gamestage extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         boolean newGame = true;
 
-        if(newGame){//this will be set by the option the user picks in the previous screen
+        //this will be set by the option the user picks in the previous screen
             Board b= new Board();
             Player player1= new Player(b,'w');
             Player player2= new Player(b,'b');
             player1.setOpponent(player2);
             player2.setOpponent(player1);
             this.game= new Chess(player1 , player2, b);
-        }
+
 
         setContentView(R.layout.activity_gamestage);
             //  System.out.println("poop1");
@@ -77,7 +78,9 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
+                System.out.println("move: " + translateSpace(position));
+                selectedInt1=3;
+                selectedInt2=4;
                 if(v.equals(selectedView)){
                     return;
                 }
@@ -94,100 +97,48 @@ public class gamestage extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        /*
-        while(!this.game.isGameOver){
-
-            //Check for check mate or stale mate in player class set game over if check mate is true
-            if(this.game.playerWhite.isInCheckMate(game.board)){
-                game.isGameOver=true;
-                System.out.println("Checkmate");
-                System.out.println("Black wins");
-                break;
-            }
-            if(game.playerWhite.isInStaleMate(game.board)){
-                game.isGameOver=true;
-                System.out.println("Stalemate");
-                break;
-            }
-
-            if(game.playerWhite.isInCheck(game.board)){
-                System.out.println("Check");
-            }
-            boolean validInput=false;
-
-            while(!validInput){
-                //waits for valid input to be entered
-                while(selectedInt1==-1||selectedInt2==-1);
-
-                //asks for input and returns true if the move and input are valid
-                System.out.print("White's move: ");
-                //String entry = sc.nextLine();
-                validInput = game.handleTurn(game.playerWhite, entry);
-                System.out.println();
-                b.printBoard();
-
-            }
-            if(endGameWithResign){
-                System.out.println("White has Resigned");
-                game.isGameOver=true;
-                break;
-            }
-            if(endGameWithDraw){
-                System.out.println("White has accepted Draw: Game over");
-                game.isGameOver=true;
-                break;
-            }
-            globalCount++;
-
-
-            if(game.isGameOver){break;}//beginning of blacks turn
-
-
-            //Check for check mate or stale mate in player class set game over if check mate is true
-            if(game.playerBlack.isInCheckMate(game.board)){
-                System.out.println("Checkmate");
-                System.out.println("White wins");
-                game.isGameOver=true;
-                break;
-            }
-            if(game.playerBlack.isInStaleMate(game.board)){
-                System.out.println("Stalemate");
-                game.isGameOver=true;
-                break;
-            }
-            /// comment out for now
-            //checks if player is in check prints to screen
-            if(game.playerBlack.isInCheck(game.board)){
-                System.out.println("Check");
-            };
-
-            validInput=false;
-
-            while(!validInput){
-                //asks for input and returns true if the move and input are valid
-                System.out.print("Black's move: ");
-                String entry = sc.nextLine();
-                validInput = game.handleTurn(game.playerBlack, entry);
-                System.out.println();
-                b.printBoard();
-            }
-            if(endGameWithResign){
-                System.out.println("Black has Resigned");
-                game.isGameOver=true;
-                break;
-            }
-            if(endGameWithDraw){
-                System.out.println("Black has accepted Draw: Gameover");
-                game.isGameOver=true;
-                break;
-            }
-            globalCount++;
-
-        }//end of main game loop
-        */
     }
+
+    public void handleWhiteTurn(){
+        //handles turn and then checks if it put white in check
+        if(game.playerBlack.isInCheckMate(game.board)){
+            System.out.println("Checkmate");
+            System.out.println("White wins");
+            game.isGameOver=true;
+            return;
+        }
+        if(game.playerBlack.isInStaleMate(game.board)) {
+            System.out.println("Stalemate");
+            game.isGameOver = true;
+            return;
+        }
+        if(game.playerBlack.isInCheck(game.board)){
+            System.out.println("Check");
+        };
+
+    }
+
+    public void handleBlackTurn(){
+        //handles turn and then checks if it puts white in check
+        if(this.game.playerWhite.isInCheckMate(game.board)){
+            game.isGameOver=true;
+            System.out.println("Checkmate");
+            System.out.println("Black wins");
+            return;
+        }
+        if(game.playerWhite.isInStaleMate(game.board)){
+            game.isGameOver=true;
+            System.out.println("Stalemate");
+            return;
+        }
+
+        if(game.playerWhite.isInCheck(game.board)){
+            System.out.println("Check");
+        }
+
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -225,4 +176,67 @@ public class gamestage extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }*/
+
+    public String translateSpace(int num){
+        char[] cols= {'a','b','c','d','e','f','g','h'};
+        char col='f';
+        int colNum = num;
+        int row=9;
+        if(num<8){
+            colNum = num;
+            col = cols[colNum];
+            row = 8;
+            return "" + col + row;
+        }
+        else if(num<16){
+            colNum=num-8;
+            col = cols[colNum];
+            row = 7;
+            return "" + col + row;
+        }
+        else if(num<24){
+            colNum=num-16;
+            col = cols[colNum];
+            row = 6;
+            return "" + col + row;
+        }
+        else if(num<32){
+            colNum=num-24;
+            col = cols[colNum];
+            row = 5;
+            return "" + col + row;
+        }
+        else if(num<40){
+            colNum=num-32;
+            col = cols[colNum];
+            row = 4;
+            return "" + col + row;
+        }
+        else if(num<48){
+            colNum=num-40;
+            col = cols[colNum];
+            row = 3;
+            return "" + col + row;
+        }
+        else if(num<56){
+            colNum=num-48;
+            col = cols[colNum];
+            row = 2;
+            return "" + col + row;
+        }
+        else if(num<64){
+            colNum=num-56;
+            col = cols[colNum];
+            row = 1;
+            return "" + col + row;
+        }
+        return null;
+    }
+
+
+
+
+
+
+
 }
