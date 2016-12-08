@@ -28,6 +28,14 @@
         android:layout_below="@+id/replay"
         android:layout_alignStart="@+id/replay"
         android:layout_marginTop="23dp"
-        android:id="@+id/listView" />
+        android:id="@+id/listViewByName" />
+
+    <Button
+        android:text="add game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/listViewByName"
+        android:layout_alignEnd="@+id/new_game"
+        android:id="@+id/add_game" />
 
 </RelativeLayout>

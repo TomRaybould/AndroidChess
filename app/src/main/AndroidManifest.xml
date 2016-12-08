@@ -11,13 +11,22 @@
         <activity android:name=".gamestage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Home_Screen"
-            android:label="@string/title_activity_home__screen"
-            android:theme="@style/AppTheme"></activity>
+            android:label="Home Screen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".list_by_date"
+            android:label="List Of Games By Date"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".list_by_name"
+            android:label="List Of Games By Name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package com.example.miketomkowich.chess72android;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +19,8 @@ public class gamestage extends AppCompatActivity {
     private View selectedView;
     private Integer selectedInt1=-1;
     private Integer selectedInt2=-1;
-
+    int move_count;
+    String store = "";
     private Chess game;
 
     public Chess getGame(){
@@ -28,6 +28,12 @@ public class gamestage extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (game_memory.launch()){
+            Toast.makeText(getApplicationContext(), "Start of App", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Home_Screen.class);
+            startActivity(intent);
+
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamestage);
 
@@ -48,7 +54,7 @@ public class gamestage extends AppCompatActivity {
         );
         ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.black_knight_black_space);
-        ab.setTitle("set game name here");
+        ab.setTitle("CHESS");
         ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
@@ -93,8 +99,27 @@ public class gamestage extends AppCompatActivity {
                     v.setBackgroundColor(Color.rgb(255, 0, 0));
                     selectedView=v;
                 }
-                Toast.makeText(gamestage.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                if(move_count == 0){
+                    String translated = translateSpace(position);
+                    Toast.makeText(gamestage.this, "" + translated,
+                            Toast.LENGTH_SHORT).show();
+                    store = translated;
+                    move_count++;
+                }
+
+                else if(move_count==1){
+                    String translated = translateSpace(position);
+                    Toast.makeText(gamestage.this, "in here",
+                            Toast.LENGTH_SHORT).show();
+                    if(store!= null){
+                        store = store + " " + translated;
+                        Toast.makeText(gamestage.this, "" + store,
+                                Toast.LENGTH_SHORT).show();
+                        
+                    }
+                    move_count = 0;
+                }
+
             }
         });
     }
@@ -142,7 +167,7 @@ public class gamestage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_a, menu);
+        menuInflater.inflate(R.menu.menu_gamestage, menu);
         return true;
     }
 
@@ -158,8 +183,6 @@ public class gamestage extends AppCompatActivity {
         else if(id == R.id.quit){
             Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Home_Screen.class);
-            String message = "Will be Home Screen";
-            intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(intent);
         }
         else if(id == R.id.resign){
@@ -232,11 +255,4 @@ public class gamestage extends AppCompatActivity {
         }
         return null;
     }
-
-
-
-
-
-
-
 }
