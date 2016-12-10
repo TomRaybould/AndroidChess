@@ -43,7 +43,7 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         public long getItemId(int position) {
-            return position;
+             return mThumbIds[position];
         }
 
         // create a new ImageView for each item referenced by the Adapter
@@ -191,6 +191,7 @@ public class ImageAdapter extends BaseAdapter {
             count++;
         }
         this.mThumbIds=results;
+        notifyDataSetChanged();
     }
 
 }

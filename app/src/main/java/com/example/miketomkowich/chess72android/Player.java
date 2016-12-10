@@ -100,6 +100,9 @@ public class Player {
 	public void setOpponent(Player opp){
 		this.opponent=opp;
 	}
+	public Player getOpponent(){
+		return this.opponent;
+	}
 	/**
 	   * This method takes in the current board and checks to see if a player is in check.
 	   * If one of your opponents pieces can attack the king it will return true. If the 

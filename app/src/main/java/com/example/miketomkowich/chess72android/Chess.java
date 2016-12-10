@@ -16,6 +16,7 @@ public class Chess {
 		protected int draw;
 		protected boolean endGameWithDraw;
 		protected boolean endGameWithResign;
+		protected Player currPlayer;
 		
 	public Chess(Player white, Player black, Board b) {
 		this.playerWhite = white;
@@ -26,6 +27,7 @@ public class Chess {
 		this.draw=0;
 		this.endGameWithDraw=false;
 		this.endGameWithResign=false;
+		this.currPlayer = white;
 	}
 	public Board getBoard(){
 		return this.board;

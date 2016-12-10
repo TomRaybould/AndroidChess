@@ -13,14 +13,32 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import static android.view.Gravity.CENTER;
+import static java.lang.Thread.sleep;
 
 public class gamestage extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private View selectedView;
-    private Integer selectedInt1=-1;
-    private Integer selectedInt2=-1;
-    int move_count;
-    String store = "";
+
+    private static String move = null;
+
+    static final long [] whitePieces = {R.drawable.white_pawn_black_space,   R.drawable.white_pawn_white_space,
+                           R.drawable.white_rook_black_space,   R.drawable.white_rook_white_space,
+                           R.drawable.white_knight_black_space, R.drawable.white_knight_white_space,
+                           R.drawable.white_bishop_black_space, R.drawable.white_bishop_white_space,
+                           R.drawable.white_queen_black_space,  R.drawable.white_queen_white_space,
+                           R.drawable.white_king_black_space,   R.drawable.white_king_white_space
+    };
+
+    static final long [] blackPieces = {R.drawable.black_pawn_black_space,   R.drawable.black_pawn_white_space,
+                           R.drawable.black_rook_black_space,   R.drawable.black_rook_white_space,
+                           R.drawable.black_knight_black_space, R.drawable.black_knight_white_space,
+                           R.drawable.black_bishop_black_space, R.drawable.black_bishop_white_space,
+                           R.drawable.black_queen_black_space,  R.drawable.black_queen_white_space,
+                           R.drawable.black_king_black_space,   R.drawable.black_king_white_space
+    };
+
+    static final long [] spaces      = {R.drawable.black_space,              R.drawable.white_space};
+
     private Chess game;
 
     public Chess getGame(){
@@ -75,7 +93,7 @@ public class gamestage extends AppCompatActivity {
             // System.out.println("poop2");
         System.out.println("poop3");
         System.out.println(this.game);
-        ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
+        final ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
         System.out.println("poop4");
         gridview.setAdapter(gameDrawer);
         System.out.println("poop5");
@@ -84,84 +102,96 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                System.out.println("move: " + translateSpace(position));
-                selectedInt1=3;
-                selectedInt2=4;
-                if(v.equals(selectedView)){
+                if(game.isGameOver==true){
+                    makeToast("Game is over");
                     return;
                 }
-                else{
-                    if(selectedView!=null){
-                        System.out.println("ID :"+ id);
-                        ImageAdapter img=(ImageAdapter)gridview.getAdapter();
+                System.out.println("space selected " + translateSpace(position));
+
+                if (move == null && !isYourPiece(id)) {//if you try to select a piece that isnt yours first
+                    if (game.currPlayer.getColor() == 'w') {
+                        makeToast("White's move");
+                    } else if (game.currPlayer.getColor() == 'b') {
+                        makeToast("Black's move");
+                    }
+                }
+
+                else if(move == null && isYourPiece(id)){//if your first selected piece is your color highlight it
+
+                    selectedView = v;
+                    v.setBackgroundColor(Color.rgb(0,255,255));
+                    move = translateSpace(position);
+                    while(move == null);
+                    System.out.println("Move: "+move);
+
+                }
+
+                else if(move != null && isYourPiece(id)){//if you have a piece selected and pick another one of your piece just move the highlighter
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView = v;
+                    v.setBackgroundColor(Color.rgb(0,255,255));
+                    move = translateSpace(position);
+                    System.out.println("Move: "+move);
+
+                }
+
+                else if(move != null && !isYourPiece(id)){//if you have a piece selected and try to move it space that isnt yours
+                    move += " "+ translateSpace(position);
+
+                    System.out.println("Move: "+move);
+
+                    if(game.handleTurn(game.currPlayer,move)){//the move was valid
                         selectedView.setBackgroundColor(Color.rgb(0,0,0));
-                    }
-                    v.setBackgroundColor(Color.rgb(255, 0, 0));
-                    selectedView=v;
-                }
-                if(move_count == 0){
-                    String translated = translateSpace(position);
-                    Toast.makeText(gamestage.this, "" + translated,
-                            Toast.LENGTH_SHORT).show();
-                    store = translated;
-                    move_count++;
-                }
+                        selectedView = null;
+                        move = null;
+                        System.out.println("move when thru");
+                        gameDrawer.updateFromBackEnd(game.getBoard());
+                        game.currPlayer=game.currPlayer.getOpponent();
 
-                else if(move_count==1){
-                    String translated = translateSpace(position);
-                    Toast.makeText(gamestage.this, "in here",
-                            Toast.LENGTH_SHORT).show();
-                    if(store!= null){
-                        store = store + " " + translated;
-                        Toast.makeText(gamestage.this, "" + store,
-                                Toast.LENGTH_SHORT).show();
-                        
-                    }
-                    move_count = 0;
-                }
+                        if(game.playerBlack.isInCheckMate(game.board)){
+                            makeToast("Checkmate");
+                            makeToast("White wins");
+                            game.isGameOver=true;
+                            return;
+                        }
 
+                        else if(game.playerWhite.isInCheckMate(game.board)){
+                            game.isGameOver=true;
+                            makeToast("Checkmate");
+                            makeToast("Black wins");
+                            return;
+                        }
+
+                        else if(game.playerBlack.isInStaleMate(game.board)) {
+                            makeToast("Stalemate");
+                            game.isGameOver = true;
+                            return;
+                        }
+                        else if(game.playerBlack.isInCheck(game.board)){
+                            makeToast("Black is in check");
+                        }
+                        if(game.playerWhite.isInCheck(game.board)){
+                            makeToast("White is in Check");
+                        }
+
+
+                    }
+                    else{
+                        selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                        selectedView = null;
+                        move = null;
+
+                        makeToast("Invalid move");
+
+                        gameDrawer.updateFromBackEnd(game.getBoard());
+
+                    }
+                }
             }
         });
     }
 
-    public void handleWhiteTurn(){
-        //handles turn and then checks if it put white in check
-        if(game.playerBlack.isInCheckMate(game.board)){
-            System.out.println("Checkmate");
-            System.out.println("White wins");
-            game.isGameOver=true;
-            return;
-        }
-        if(game.playerBlack.isInStaleMate(game.board)) {
-            System.out.println("Stalemate");
-            game.isGameOver = true;
-            return;
-        }
-        if(game.playerBlack.isInCheck(game.board)){
-            System.out.println("Check");
-        };
 
-    }
-
-    public void handleBlackTurn(){
-        //handles turn and then checks if it puts white in check
-        if(this.game.playerWhite.isInCheckMate(game.board)){
-            game.isGameOver=true;
-            System.out.println("Checkmate");
-            System.out.println("Black wins");
-            return;
-        }
-        if(game.playerWhite.isInStaleMate(game.board)){
-            game.isGameOver=true;
-            System.out.println("Stalemate");
-            return;
-        }
-
-        if(game.playerWhite.isInCheck(game.board)){
-            System.out.println("Check");
-        }
-
-    }
 
 
     @Override
@@ -200,7 +230,37 @@ public class gamestage extends AppCompatActivity {
         startActivity(intent);
     }*/
 
-    public String translateSpace(int num){
+
+
+
+    //tests if the current player has selected a piece of their color
+    public boolean isYourPiece(long id){
+
+        if (game.currPlayer.getColor() == 'w'){
+            for(long test : whitePieces){
+                if(test == id){
+                    return true;
+                }
+            }
+        }
+
+        else if(game.currPlayer.getColor() =='b'){
+            for(long test : blackPieces){
+                if(test == id){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+    public void makeToast(String mess) {
+        Toast.makeText(getApplicationContext(), mess, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String translateSpace(int num){
         char[] cols= {'a','b','c','d','e','f','g','h'};
         char col='f';
         int colNum = num;
