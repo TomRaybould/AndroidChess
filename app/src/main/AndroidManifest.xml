@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".gamestage">
+        <activity android:name=".Home_Screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Home_Screen"
+            android:name=".gamestage"
             android:label="Home Screen"
             android:theme="@style/AppTheme" />
         <activity

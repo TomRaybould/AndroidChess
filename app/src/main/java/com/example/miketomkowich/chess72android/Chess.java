@@ -17,8 +17,11 @@ public class Chess {
 		protected boolean endGameWithDraw;
 		protected boolean endGameWithResign;
 		protected Player currPlayer;
-		
+		protected static Chess currGame;
+
 	public Chess(Player white, Player black, Board b) {
+
+		System.out.println("new game");
 		this.playerWhite = white;
 		this.playerBlack = black;
 		this.board = b;
@@ -28,6 +31,8 @@ public class Chess {
 		this.endGameWithDraw=false;
 		this.endGameWithResign=false;
 		this.currPlayer = white;
+		currGame=this;
+
 	}
 	public Board getBoard(){
 		return this.board;

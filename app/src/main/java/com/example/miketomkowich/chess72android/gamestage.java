@@ -41,11 +41,14 @@ public class gamestage extends AppCompatActivity {
 
     private Chess game;
 
+    static boolean newGame=true;
+
     public Chess getGame(){
         return this.game;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println(savedInstanceState);
         if (game_memory.launch()){
             Toast.makeText(getApplicationContext(), "Start of App", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Home_Screen.class);
@@ -76,7 +79,7 @@ public class gamestage extends AppCompatActivity {
         ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        boolean newGame = true;
+
 
         //this will be set by the option the user picks in the previous screen
             Board b= new Board();
@@ -84,8 +87,14 @@ public class gamestage extends AppCompatActivity {
             Player player2= new Player(b,'b');
             player1.setOpponent(player2);
             player2.setOpponent(player1);
-            this.game= new Chess(player1 , player2, b);
 
+            if (newGame) {
+                this.game = new Chess(player1, player2, b);
+                newGame=false;
+            }
+            else{
+                this.game = Chess.currGame;
+            }
 
         setContentView(R.layout.activity_gamestage);
             //  System.out.println("poop1");
@@ -102,7 +111,7 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if(game.isGameOver==true){
+                if(game.isGameOver){
                     makeToast("Game is over");
                     return;
                 }
@@ -152,20 +161,18 @@ public class gamestage extends AppCompatActivity {
                             makeToast("Checkmate");
                             makeToast("White wins");
                             game.isGameOver=true;
-                            return;
                         }
 
                         else if(game.playerWhite.isInCheckMate(game.board)){
                             game.isGameOver=true;
                             makeToast("Checkmate");
                             makeToast("Black wins");
-                            return;
                         }
 
                         else if(game.playerBlack.isInStaleMate(game.board)) {
                             makeToast("Stalemate");
                             game.isGameOver = true;
-                            return;
+
                         }
                         else if(game.playerBlack.isInCheck(game.board)){
                             makeToast("Black is in check");
@@ -180,11 +187,8 @@ public class gamestage extends AppCompatActivity {
                         selectedView.setBackgroundColor(Color.rgb(0,0,0));
                         selectedView = null;
                         move = null;
-
                         makeToast("Invalid move");
-
                         gameDrawer.updateFromBackEnd(game.getBoard());
-
                     }
                 }
             }
@@ -251,9 +255,7 @@ public class gamestage extends AppCompatActivity {
                 }
             }
         }
-
         return false;
-
     }
 
     public void makeToast(String mess) {
