@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/black_bishop_black_space"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:scaleType="center"
+        android:background="#FFFFBB33"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:text="Do You accept the Draw?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statement" />
+
+    <Button
+        android:text="Yes, i feel sympathy for my opponent"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/yes_draw" />
+    <Button
+        android:text="No, I will make my oppenent suffer"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_draw" />
+
+
+</LinearLayout>

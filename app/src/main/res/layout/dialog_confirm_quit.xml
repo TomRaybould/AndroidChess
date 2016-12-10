@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/black_bishop_black_space"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:scaleType="center"
+        android:background="#FFFFBB33"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:text="Do you want to Quit?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statement" />
+
+    <Button
+        android:text="Yes, go to home screen"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirm_quit_yes" />
+
+    <Button
+        android:text="No, keep playing"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/confirm_quit_no" />
+
+
+</LinearLayout>

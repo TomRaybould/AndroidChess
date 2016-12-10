@@ -1,5 +1,6 @@
 package com.example.miketomkowich.chess72android;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,11 +10,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import static android.view.Gravity.CENTER;
-import static java.lang.Thread.sleep;
 
 public class gamestage extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -213,14 +214,84 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.draw){
             Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
+            final Dialog dialog = new Dialog(gamestage.this);
+            //dialog.setTitle("Add a game");
+            dialog.setContentView(R.layout.dialog_draw);
+            dialog.show();
+
+            Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
+            Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
+
+            yes_draw.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"Exit to home screen", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
+                    startActivity(intent);
+                    dialog.cancel();
+                }
+            });
+            no_draw.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            });
         }
         else if(id == R.id.quit){
             Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, Home_Screen.class);
-            startActivity(intent);
+            final Dialog dialog = new Dialog(gamestage.this);
+            //dialog.setTitle("Add a game");
+            dialog.setContentView(R.layout.dialog_confirm_quit);
+            dialog.show();
+
+            Button confirm_quit_yes = (Button)dialog.findViewById(R.id.confirm_quit_yes);
+            Button confirm_quit_no = (Button)dialog.findViewById(R.id.confirm_quit_no);
+
+            confirm_quit_yes.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"Exit to home screen", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
+                    startActivity(intent);
+                    dialog.cancel();
+                }
+            });
+            confirm_quit_no.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            });
         }
         else if(id == R.id.resign){
             Toast.makeText(getApplicationContext(), "RESIGN", Toast.LENGTH_SHORT).show();
+            final Dialog dialog = new Dialog(gamestage.this);
+            //dialog.setTitle("Add a game");
+            dialog.setContentView(R.layout.dialog_resign);
+            dialog.show();
+
+            Button yes = (Button)dialog.findViewById(R.id.yes);
+            Button no = (Button)dialog.findViewById(R.id.no);
+
+            yes.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"The player has resigned", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
+                    startActivity(intent);
+                    dialog.cancel();
+                }
+            });
+            no.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Toast.makeText(getApplicationContext(),"The player has decided to stay and fight", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            });
         }
         return true;
     }
