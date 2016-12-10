@@ -23,8 +23,6 @@ public class Home_Screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
-
-      
         Intent intent = getIntent();
         String message = intent.getStringExtra(gamestage.EXTRA_MESSAGE);
         TextView textView = new TextView(this);
@@ -35,6 +33,8 @@ public class Home_Screen extends AppCompatActivity {
         layout.addView(textView);
         Button addGame = (Button) findViewById(R.id.add_game);
         Button replay = (Button) findViewById(R.id.replay);
+        Button newGame = (Button) findViewById(R.id.new_game);
+
         addGame.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -104,7 +104,16 @@ public class Home_Screen extends AppCompatActivity {
             }
         });
 
+        newGame.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                gamestage.newGame=true;
+                sendMessage(v);
+            }
+        });
     }
+
+
     public void sendMessage(View view) {
         // Do something in response to button
         Toast.makeText(getApplicationContext(), "switch screen was called", Toast.LENGTH_SHORT).show();
