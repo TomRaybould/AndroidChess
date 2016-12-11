@@ -162,17 +162,23 @@ public class gamestage extends AppCompatActivity {
                             makeToast("Checkmate");
                             makeToast("White wins");
                             game.isGameOver=true;
+                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                            startActivity(intent);
                         }
 
                         else if(game.playerWhite.isInCheckMate(game.board)){
                             game.isGameOver=true;
                             makeToast("Checkmate");
                             makeToast("Black wins");
+                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                            startActivity(intent);
                         }
 
                         else if(game.playerBlack.isInStaleMate(game.board)) {
                             makeToast("Stalemate");
                             game.isGameOver = true;
+                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                            startActivity(intent);
 
                         }
                         else if(game.playerBlack.isInCheck(game.board)){
@@ -228,6 +234,8 @@ public class gamestage extends AppCompatActivity {
                     public void onClick(View v){
                         Toast.makeText(getApplicationContext(),"go to save game", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                        String message = "DRAW";
+                        intent.putExtra(EXTRA_MESSAGE, message);
                         startActivity(intent);
                         dialog.cancel();
                     }
