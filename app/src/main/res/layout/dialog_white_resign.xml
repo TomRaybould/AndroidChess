@@ -12,21 +12,21 @@
         android:contentDescription="@string/app_name" />
 
     <TextView
-        android:text="Do You accept the Draw?"
+        android:text="White, do you want to Resign?"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/statement" />
 
     <Button
-        android:text="Yes, i feel sympathy for my opponent"
+        android:text="Yes, I give up and have shamed my family"
         android:layout_width="162dp"
         android:layout_height="wrap_content"
-        android:id="@+id/yes_draw" />
+        android:id="@+id/yes_record" />
     <Button
-        android:text="No, I will make my oppenent suffer"
+        android:text="No, I will fight until the end! FOR SPARTA!!!!!!"
         android:layout_width="162dp"
         android:layout_height="wrap_content"
-        android:id="@+id/no_draw" />
+        android:id="@+id/no_record" />
 
 
 </LinearLayout>

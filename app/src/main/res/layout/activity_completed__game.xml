@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.miketomkowich.chess72android.Completed_Game">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:text="Yes Record Game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="133dp"
+        android:id="@+id/yes_record" />
+
+    <Button
+        android:text="No, Dont Record Game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/yes_record"
+        android:layout_alignEnd="@+id/yes_record"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/no_record" />
+
+    <TextView
+        android:text="Congratulations on Your Victory and Sorry for your defeat. Would you like to record your game for Future Generations?"
+        android:layout_width="265dp"
+        android:layout_height="50dp"
+        android:id="@+id/textView"
+        android:layout_marginBottom="81dp"
+        android:layout_above="@+id/no_record"
+        android:layout_alignStart="@+id/no_record"
+        android:layout_marginStart="12dp" />
+
+</RelativeLayout>

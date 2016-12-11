@@ -3,5 +3,8 @@
     <string name="title_activity_home__screen">Home_Screen</string>
     <string name="title_activity_list_by_date">list_by_date</string>
     <string name="title_activity_list_by_name">list_by_name</string>
+    <string name="title_activity_completed__game">Completed_Game</string>
+    <string name="title_activity_completed__game__white__victory">Completed_Game_White_Victory
+    </string>
 
 </resources>

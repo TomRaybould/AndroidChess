@@ -214,30 +214,59 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.draw){
             Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
-            final Dialog dialog = new Dialog(gamestage.this);
-            //dialog.setTitle("Add a game");
-            dialog.setContentView(R.layout.dialog_draw);
-            dialog.show();
+            if(game.currPlayer.getColor() == 'w'){
+                final Dialog dialog = new Dialog(gamestage.this);
+                //dialog.setTitle("Add a game");
+                dialog.setContentView(R.layout.dialog_white_offer_draw);
+                dialog.show();
 
-            Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
-            Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
+                Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
+                Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
 
-            yes_draw.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"Exit to home screen", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
-                    startActivity(intent);
-                    dialog.cancel();
-                }
-            });
-            no_draw.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
-                }
-            });
+                yes_draw.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"go to save game", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                no_draw.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+            }
+            else if(game.currPlayer.getColor() == 'b'){
+                final Dialog dialog = new Dialog(gamestage.this);
+                //dialog.setTitle("Add a game");
+                dialog.setContentView(R.layout.dialog_black_offer_draw);
+                dialog.show();
+
+                Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
+                Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
+
+                yes_draw.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"Go to save game", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                no_draw.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+            }
+
         }
         else if(id == R.id.quit){
             Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
@@ -268,30 +297,59 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.resign){
             Toast.makeText(getApplicationContext(), "RESIGN", Toast.LENGTH_SHORT).show();
-            final Dialog dialog = new Dialog(gamestage.this);
-            //dialog.setTitle("Add a game");
-            dialog.setContentView(R.layout.dialog_resign);
-            dialog.show();
+            if(game.currPlayer.getColor() == 'w'){
+                final Dialog dialog = new Dialog(gamestage.this);
+                //dialog.setTitle("Add a game");
+                dialog.setContentView(R.layout.dialog_white_resign);
+                dialog.show();
 
-            Button yes = (Button)dialog.findViewById(R.id.yes);
-            Button no = (Button)dialog.findViewById(R.id.no);
+                Button yes = (Button)dialog.findViewById(R.id.yes_record);
+                Button no = (Button)dialog.findViewById(R.id.no_record);
 
-            yes.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"The player has resigned", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
-                    startActivity(intent);
-                    dialog.cancel();
-                }
-            });
-            no.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"The player has decided to stay and fight", Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
-                }
-            });
+                yes.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"White has resigned and Black Wins game", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                no.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"White has decided to stay and fight", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+            }
+            else if(game.currPlayer.getColor() == 'b'){
+                final Dialog dialog = new Dialog(gamestage.this);
+                //dialog.setTitle("Add a game");
+                dialog.setContentView(R.layout.dialog_black_resign);
+                dialog.show();
+
+                Button yes = (Button)dialog.findViewById(R.id.yes_record);
+                Button no = (Button)dialog.findViewById(R.id.no_record);
+
+                yes.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"Black has resigned and White Wins game", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+                no.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Toast.makeText(getApplicationContext(),"Black has decided to stay and fight", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+            }
+
         }
         return true;
     }
