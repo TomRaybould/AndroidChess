@@ -1,13 +1,16 @@
 package com.example.miketomkowich.chess72android;
 
 import java.util.Scanner;
+import java.io.Serializable;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 /**
 * Chess is a two player version of chess using a printed board 
 * and requiring text input from the users
 * 
 * @author  Tom Raybould & Mike Tomkowich
 */
-public class Chess {
+public class Chess implements Serializable{
 		protected Player playerWhite;
 		protected Player playerBlack;
 		protected Board board;
@@ -38,107 +41,7 @@ public class Chess {
 		return this.board;
 	}
 	
-	public static void main(String[] args) {
-		
-		Board b= new Board();
-	    Player player1= new Player(b,'w');
-		Player player2= new Player(b,'b');
-		player1.setOpponent(player2);
-		player2.setOpponent(player1);
-		Chess game= new Chess(player1 , player2, b );
-		
-		b.printBoard();
-		// main game loop
-		Scanner sc= new Scanner(System.in);
-		while(!game.isGameOver){
-			//Check for check mate or stale mate in player class set game over if check mate is true
-			if(game.playerWhite.isInCheckMate(game.board)){
-				game.isGameOver=true;
-				System.out.println("Checkmate");
-				System.out.println("Black wins");
-				break;
-			}
-			if(game.playerWhite.isInStaleMate(game.board)){
-				game.isGameOver=true;
-				System.out.println("Stalemate");
-				break;
-			}
-			
-			if(game.playerWhite.isInCheck(game.board)){
-				System.out.println("Check");
-			}
-			boolean validInput=false;
-				
-			while(!validInput){
-				//asks for input and returns true if the move and input are valid
-				System.out.print("White's move: ");
-				String entry = sc.nextLine();
-				validInput = game.handleTurn(game.playerWhite, entry);
-				System.out.println();
-				b.printBoard();
-				
-			}
-			if(game.endGameWithResign){
-				System.out.println("White has Resigned");
-				game.isGameOver=true;
-				break;
-			}
-			if(game.endGameWithDraw){
-				System.out.println("White has accepted Draw: Game over");
-				game.isGameOver=true;
-				break;
-			}
-			game.globalCount++;
-			
-			
-			if(game.isGameOver){break;}//beginning of blacks turn
-			
-			
-			//Check for check mate or stale mate in player class set game over if check mate is true
-			if(game.playerBlack.isInCheckMate(game.board)){
-				System.out.println("Checkmate");
-				System.out.println("White wins");
-				game.isGameOver=true;
-				break;
-			}
-			if(game.playerBlack.isInStaleMate(game.board)){
-				System.out.println("Stalemate");
-				game.isGameOver=true;
-				break;
-			}
-			/// comment out for now
-			//checks if player is in check prints to screen
-			if(game.playerBlack.isInCheck(game.board)){
-				System.out.println("Check");
-			};
-			
-			validInput=false;
-				
-			while(!validInput){
-				//asks for input and returns true if the move and input are valid
-				System.out.print("Black's move: ");
-				String entry = sc.nextLine();
-				validInput = game.handleTurn(game.playerBlack, entry);
-				System.out.println();
-				b.printBoard();
-			}
-			if(game.endGameWithResign){
-				System.out.println("Black has Resigned");
-				game.isGameOver=true;
-				break;
-			}
-			if(game.endGameWithDraw){
-				System.out.println("Black has accepted Draw: Gameover");
-				game.isGameOver=true;
-				break;
-			}
-			game.globalCount++;
-			
-		}//end of main game loop
-		sc.close();//close scanner when game is over
-	
-	}
-	
+
 	/**
 	   * This method takes in user input, prints an error if the input or move is invalid
 	   * and returns true, only if the move and input were valid. This method passes the board
@@ -153,7 +56,13 @@ public class Chess {
 	   * @return boolean true only if the move and input were valid other wise returned false
 	*/	
 	public boolean handleTurn(Player p, String entry){
-		 
+		if(entry==null){
+			return false;
+		}
+		if (entry.contains("undo")){
+			Move.getLastMove().undoMove(this.getBoard());
+			return true;
+		}
 		 Piece promotion = null;
 		 if(entry.length() != 5 || !Character.isAlphabetic(entry.charAt(0)) || !Character.isDigit(entry.charAt(1)) ||
 				 !Character.isAlphabetic(entry.charAt(3)) || !Character.isDigit(entry.charAt(4))){

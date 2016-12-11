@@ -1,6 +1,8 @@
 package com.example.miketomkowich.chess72android;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,43 +15,66 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import static android.view.Gravity.CENTER;
 
 public class gamestage extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
     private View selectedView;
 
     private static String move = null;
 
     static final long [] whitePieces = {R.drawable.white_pawn_black_space,   R.drawable.white_pawn_white_space,
-                           R.drawable.white_rook_black_space,   R.drawable.white_rook_white_space,
-                           R.drawable.white_knight_black_space, R.drawable.white_knight_white_space,
-                           R.drawable.white_bishop_black_space, R.drawable.white_bishop_white_space,
-                           R.drawable.white_queen_black_space,  R.drawable.white_queen_white_space,
-                           R.drawable.white_king_black_space,   R.drawable.white_king_white_space
+                                        R.drawable.white_rook_black_space,   R.drawable.white_rook_white_space,
+                                        R.drawable.white_knight_black_space, R.drawable.white_knight_white_space,
+                                        R.drawable.white_bishop_black_space, R.drawable.white_bishop_white_space,
+                                        R.drawable.white_queen_black_space,  R.drawable.white_queen_white_space,
+                                        R.drawable.white_king_black_space,   R.drawable.white_king_white_space
     };
 
     static final long [] blackPieces = {R.drawable.black_pawn_black_space,   R.drawable.black_pawn_white_space,
-                           R.drawable.black_rook_black_space,   R.drawable.black_rook_white_space,
-                           R.drawable.black_knight_black_space, R.drawable.black_knight_white_space,
-                           R.drawable.black_bishop_black_space, R.drawable.black_bishop_white_space,
-                           R.drawable.black_queen_black_space,  R.drawable.black_queen_white_space,
-                           R.drawable.black_king_black_space,   R.drawable.black_king_white_space
+                                        R.drawable.black_rook_black_space,   R.drawable.black_rook_white_space,
+                                        R.drawable.black_knight_black_space, R.drawable.black_knight_white_space,
+                                        R.drawable.black_bishop_black_space, R.drawable.black_bishop_white_space,
+                                        R.drawable.black_queen_black_space,  R.drawable.black_queen_white_space,
+                                        R.drawable.black_king_black_space,   R.drawable.black_king_white_space
     };
 
     static final long [] spaces      = {R.drawable.black_space,              R.drawable.white_space};
 
     private Chess game;
 
+    private ArrayList<String> moves= new ArrayList<>();
+
+    private String fileName = "temp";
+
+    private ImageAdapter gridImgApt;
+
+    public void setFile(String file){
+        this.fileName=file;
+    }
+
     static boolean newGame=true;
+
 
     public Chess getGame(){
         return this.game;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println(savedInstanceState);
+
+        this.readMovesFromFile();
+
         if (game_memory.launch()){
             Toast.makeText(getApplicationContext(), "Start of App", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Home_Screen.class);
@@ -104,6 +129,7 @@ public class gamestage extends AppCompatActivity {
         System.out.println("poop3");
         System.out.println(this.game);
         final ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
+        this.gridImgApt= gameDrawer;
         System.out.println("poop4");
         gridview.setAdapter(gameDrawer);
         System.out.println("poop5");
@@ -116,6 +142,8 @@ public class gamestage extends AppCompatActivity {
                     makeToast("Game is over");
                     return;
                 }
+
+
                 System.out.println("space selected " + translateSpace(position));
 
                 if (move == null && !isYourPiece(id)) {//if you try to select a piece that isnt yours first
@@ -150,7 +178,9 @@ public class gamestage extends AppCompatActivity {
 
                     System.out.println("Move: "+move);
 
+
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
+                        moves.add(move);//add the move if it is valid
                         selectedView.setBackgroundColor(Color.rgb(0,0,0));
                         selectedView = null;
                         move = null;
@@ -159,26 +189,24 @@ public class gamestage extends AppCompatActivity {
                         game.currPlayer=game.currPlayer.getOpponent();
 
                         if(game.playerBlack.isInCheckMate(game.board)){
-                            makeToast("Checkmate");
-                            makeToast("White wins");
+                            makeGameOverAlert(v.getContext(),"Checkmate White Wins!!!\nDo you want to record this game?");
                             game.isGameOver=true;
                             Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            startActivity(intent);
+                            //startActivity(intent);
                         }
 
                         else if(game.playerWhite.isInCheckMate(game.board)){
+                            makeGameOverAlert(v.getContext(),"Checkmate Black Wins!!!\nDo you want to record this game?");
                             game.isGameOver=true;
-                            makeToast("Checkmate");
-                            makeToast("Black wins");
                             Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            startActivity(intent);
+                            //startActivity(intent);
                         }
 
                         else if(game.playerBlack.isInStaleMate(game.board)) {
-                            makeToast("Stalemate");
+                            makeGameOverAlert(v.getContext(),"Stalemate\nDo you want to record this game?");
                             game.isGameOver = true;
                             Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            startActivity(intent);
+                            //startActivity(intent);
 
                         }
                         else if(game.playerBlack.isInCheck(game.board)){
@@ -216,7 +244,51 @@ public class gamestage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
         if(id == R.id.ai) {
-            Toast.makeText(getApplicationContext(), "AI", Toast.LENGTH_SHORT).show();
+            move = null;
+            for (int i = 0; i <= 64; i++) {
+                    move = translateSpace(i);
+                for(int j = 0; j <= 64;j++){
+                    String tryMove= move+" "+translateSpace(j);
+                    System.out.println("AI move try: "+tryMove);
+                    if(game.handleTurn(this.game.currPlayer,tryMove)){
+                        moves.add(tryMove);
+                        this.game.currPlayer= this.game.currPlayer.getOpponent();
+                        move=null;
+                        this.gridImgApt.updateFromBackEnd(game.getBoard());
+                        this.writeMovesToFile();
+                        return true;
+                    }
+                }
+            }
+            makeToast("No moves found");
+            move=null;
+            return true;
+
+        }
+        else if(id == R.id.undo){
+            System.out.println(moves);
+            if(moves==null || moves.get(0)==null){
+                makeToast("No moves to undo");
+                return true;
+            }
+            else if(moves.get((moves.size()-1)).contains("undo")){
+                makeToast("You can only undo the last move");
+                return true;
+            }
+            else{
+                move="undo";
+                if(game.handleTurn(game.currPlayer,move)) {//the move was valid
+                    moves.add(move);//add the move if it is valid
+                    if(selectedView!=null) {
+                        selectedView.setBackgroundColor(Color.rgb(0, 0, 0));
+                        selectedView = null;
+                    }
+                    move = null;
+                    System.out.println("move when thru");
+                    this.gridImgApt.updateFromBackEnd(game.getBoard());
+                    game.currPlayer = game.currPlayer.getOpponent();
+                }
+            }
         }
         else if(id == R.id.draw){
             Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
@@ -278,6 +350,7 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.quit){
             Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
+            this.writeMovesToFile();
             final Dialog dialog = new Dialog(gamestage.this);
             //dialog.setTitle("Add a game");
             dialog.setContentView(R.layout.dialog_confirm_quit);
@@ -398,6 +471,63 @@ public class gamestage extends AppCompatActivity {
     public void makeToast(String mess) {
         Toast.makeText(getApplicationContext(), mess, Toast.LENGTH_SHORT).show();
     }
+
+    public void makeGameOverAlert(Context c, String mess ){
+
+        AlertDialog alertDialog;
+
+        alertDialog = new AlertDialog.Builder(c).create();
+        alertDialog.setTitle("Game Over");
+        alertDialog.setMessage(mess);
+
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"No Thanks", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "You clicked on No thanks", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.show();
+    }
+
+
+
+    public void writeMovesToFile(){
+        try {
+            FileOutputStream fos = openFileOutput(this.fileName, this.MODE_PRIVATE);
+            PrintWriter pw = new PrintWriter(fos);
+            for(String m: moves){
+                pw.println(m);
+            }
+            pw.close();
+            fos.close();
+        }catch(Exception e) {
+            System.out.println("");
+            e.printStackTrace();
+        }
+    }
+    public void readMovesFromFile(){
+        try {
+            FileInputStream fis = openFileInput(this.fileName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+            String result = null;
+            int count = 0;
+            while((result=br.readLine())!=null){
+                count ++;
+                System.out.println("Move "+count+": "+result);
+            }
+            br.close();
+            fis.close();
+        }catch(Exception e){
+            System.out.println("##############################");
+            e.printStackTrace();
+        }
+    }
+
 
     public static String translateSpace(int num){
         char[] cols= {'a','b','c','d','e','f','g','h'};

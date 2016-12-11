@@ -15,13 +15,48 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 public class Home_Screen extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private TextView mTextView;
     private static ListView listView;
+    public static ArrayList<Game> games;
+    private static final String MASTER_FILE = "MASTER_FILE_123";
+
+    public class Game{
+        private String name;
+        private String date;
+
+        Game(String na, String da){
+            this.name=na;
+            this.date=da;
+        }
+        //no need for set methods because these should never be changed after creation
+        public String getName(){
+            return this.name;
+        }
+        public String getDate(){
+            return this.date;
+        }
+        public String toString(){
+            return this.name+'#'+this.date;
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Update this.games arraylist from sorted file
+        this.readGamesFromFile();
+
         setContentView(R.layout.activity_home__screen);
         Intent intent = getIntent();
         String message = intent.getStringExtra(gamestage.EXTRA_MESSAGE);
@@ -137,4 +172,43 @@ public class Home_Screen extends AppCompatActivity {
         }
         return true;
     }
+
+    public void writeGamesToFile(){
+        try {
+            FileOutputStream fos = openFileOutput(MASTER_FILE, this.MODE_PRIVATE);
+            PrintWriter pw = new PrintWriter(fos);
+            for(Game g: games){
+                pw.println(g);
+            }
+            pw.close();
+            fos.close();
+        }catch(Exception e) {
+            System.out.println("");
+            e.printStackTrace();
+        }
+    }
+
+    public void readGamesFromFile(){
+        try {
+            FileInputStream fis = openFileInput(MASTER_FILE);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+            String result = null;
+            int count = 0;
+            while((result=br.readLine())!=null){
+                String [] token = result.split("#");
+                if(token.length==2){
+                    this.games.add(new Game(token[0],token[1]));
+                }
+                else{
+                    continue;
+                }
+            }
+            br.close();
+            fis.close();
+        }catch(Exception e){
+            System.out.println("##############################");
+            e.printStackTrace();
+        }
+    }
+
 }
