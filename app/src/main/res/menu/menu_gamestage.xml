@@ -17,9 +17,4 @@
         android:title="Resign"
         android:icon="@drawable/black_space"
         app:showAsAction="never"></item>
-    <item
-        android:id="@+id/quit"
-        android:title="Quit"
-        android:icon="@drawable/black_space"
-        app:showAsAction="never"></item>
 </menu>

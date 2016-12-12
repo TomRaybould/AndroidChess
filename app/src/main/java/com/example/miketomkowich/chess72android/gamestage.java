@@ -13,17 +13,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import java.io.BufferedReader;
+import java.util.Calendar;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.view.Gravity.CENTER;
 
@@ -56,7 +59,7 @@ public class gamestage extends AppCompatActivity {
 
     private ArrayList<String> moves= new ArrayList<>();
 
-    private String fileName = "temp";
+    private String fileName = "Tommy";
 
     private ImageAdapter gridImgApt;
 
@@ -138,11 +141,11 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
                 if(game.isGameOver){
                     makeToast("Game is over");
                     return;
                 }
-
 
                 System.out.println("space selected " + translateSpace(position));
 
@@ -189,25 +192,19 @@ public class gamestage extends AppCompatActivity {
                         game.currPlayer=game.currPlayer.getOpponent();
 
                         if(game.playerBlack.isInCheckMate(game.board)){
-                            makeGameOverAlert(v.getContext(),"Checkmate White Wins!!!\nDo you want to record this game?");
+                            makeGameOverAlert(v.getContext(),"Checkmate White Wins!!!\nDo you want to record this game?","Checkmate");
                             game.isGameOver=true;
-                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            //startActivity(intent);
+
                         }
 
                         else if(game.playerWhite.isInCheckMate(game.board)){
-                            makeGameOverAlert(v.getContext(),"Checkmate Black Wins!!!\nDo you want to record this game?");
+                            makeGameOverAlert(v.getContext(),"Checkmate Black Wins!!!\nDo you want to record this game?","Checkmate");
                             game.isGameOver=true;
-                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            //startActivity(intent);
                         }
 
                         else if(game.playerBlack.isInStaleMate(game.board)) {
-                            makeGameOverAlert(v.getContext(),"Stalemate\nDo you want to record this game?");
+                            makeGameOverAlert(v.getContext(),"Stalemate\nDo you want to record this game?","stalemate");
                             game.isGameOver = true;
-                            Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                            //startActivity(intent);
-
                         }
                         else if(game.playerBlack.isInCheck(game.board)){
                             makeToast("Black is in check");
@@ -223,7 +220,6 @@ public class gamestage extends AppCompatActivity {
                         selectedView = null;
                         move = null;
                         makeToast("Invalid move");
-                        gameDrawer.updateFromBackEnd(game.getBoard());
                     }
                 }
             }
@@ -255,7 +251,6 @@ public class gamestage extends AppCompatActivity {
                         this.game.currPlayer= this.game.currPlayer.getOpponent();
                         move=null;
                         this.gridImgApt.updateFromBackEnd(game.getBoard());
-                        this.writeMovesToFile();
                         return true;
                     }
                 }
@@ -267,7 +262,7 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.undo){
             System.out.println(moves);
-            if(moves==null || moves.get(0)==null){
+            if( moves == null || moves.size()==0 ||moves.get(0)==null){
                 makeToast("No moves to undo");
                 return true;
             }
@@ -291,144 +286,21 @@ public class gamestage extends AppCompatActivity {
             }
         }
         else if(id == R.id.draw){
-            Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
             if(game.currPlayer.getColor() == 'w'){
-                final Dialog dialog = new Dialog(gamestage.this);
-                //dialog.setTitle("Add a game");
-                dialog.setContentView(R.layout.dialog_white_offer_draw);
-                dialog.show();
-
-                Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
-                Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
-
-                yes_draw.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"go to save game", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                        String message = "DRAW";
-                        intent.putExtra(EXTRA_MESSAGE, message);
-                        startActivity(intent);
-                        dialog.cancel();
-                    }
-                });
-                no_draw.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
-                });
+                this.areYourSureAlert(this, "Black do you accept this draw?","draw");
             }
             else if(game.currPlayer.getColor() == 'b'){
-                final Dialog dialog = new Dialog(gamestage.this);
-                //dialog.setTitle("Add a game");
-                dialog.setContentView(R.layout.dialog_black_offer_draw);
-                dialog.show();
-
-                Button yes_draw = (Button)dialog.findViewById(R.id.yes_draw);
-                Button no_draw = (Button)dialog.findViewById(R.id.no_draw);
-
-                yes_draw.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"Go to save game", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                        startActivity(intent);
-                        dialog.cancel();
-                    }
-                });
-                no_draw.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
-                });
+                this.areYourSureAlert(this, "White do you accept this draw?","draw");
             }
 
         }
-        else if(id == R.id.quit){
-            Toast.makeText(getApplicationContext(), "QUIT", Toast.LENGTH_SHORT).show();
-            this.writeMovesToFile();
-            final Dialog dialog = new Dialog(gamestage.this);
-            //dialog.setTitle("Add a game");
-            dialog.setContentView(R.layout.dialog_confirm_quit);
-            dialog.show();
 
-            Button confirm_quit_yes = (Button)dialog.findViewById(R.id.confirm_quit_yes);
-            Button confirm_quit_no = (Button)dialog.findViewById(R.id.confirm_quit_no);
-
-            confirm_quit_yes.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"Exit to home screen", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(gamestage.this, Home_Screen.class);
-                    startActivity(intent);
-                    dialog.cancel();
-                }
-            });
-            confirm_quit_no.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    Toast.makeText(getApplicationContext(),"Stay on this screen", Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
-                }
-            });
-        }
         else if(id == R.id.resign){
-            Toast.makeText(getApplicationContext(), "RESIGN", Toast.LENGTH_SHORT).show();
-            if(game.currPlayer.getColor() == 'w'){
-                final Dialog dialog = new Dialog(gamestage.this);
-                //dialog.setTitle("Add a game");
-                dialog.setContentView(R.layout.dialog_white_resign);
-                dialog.show();
-
-                Button yes = (Button)dialog.findViewById(R.id.yes_record);
-                Button no = (Button)dialog.findViewById(R.id.no_record);
-
-                yes.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"White has resigned and Black Wins game", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                        startActivity(intent);
-                        dialog.cancel();
-                    }
-                });
-                no.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"White has decided to stay and fight", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
-                });
+            if(game.currPlayer.getColor() == 'b'){
+                areYourSureAlert(this, "Black are you sure you want to resign?","resign");
             }
-            else if(game.currPlayer.getColor() == 'b'){
-                final Dialog dialog = new Dialog(gamestage.this);
-                //dialog.setTitle("Add a game");
-                dialog.setContentView(R.layout.dialog_black_resign);
-                dialog.show();
-
-                Button yes = (Button)dialog.findViewById(R.id.yes_record);
-                Button no = (Button)dialog.findViewById(R.id.no_record);
-
-                yes.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"Black has resigned and White Wins game", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(gamestage.this, Completed_Game.class);
-                        startActivity(intent);
-                        dialog.cancel();
-                    }
-                });
-                no.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Toast.makeText(getApplicationContext(),"Black has decided to stay and fight", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                    }
-                });
+            else if(game.currPlayer.getColor() == 'w'){
+                areYourSureAlert(this, "White are you sure you want to resign?","resign");
             }
 
         }
@@ -472,45 +344,112 @@ public class gamestage extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), mess, Toast.LENGTH_SHORT).show();
     }
 
-    public void makeGameOverAlert(Context c, String mess ){
+    public void makeGameOverAlert(final Context c, String mess, final String type){
 
-        AlertDialog alertDialog;
+        final AlertDialog alertDialog;
 
         alertDialog = new AlertDialog.Builder(c).create();
         alertDialog.setTitle("Game Over");
         alertDialog.setMessage(mess);
-
+        final gamestage stage= this;
 
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "You clicked on OK", Toast.LENGTH_SHORT).show();
+                stage.dialogMaker(c, type);
+                alertDialog.dismiss();
             }
         });
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"No Thanks", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "You clicked on No thanks", Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
             }
         });
         alertDialog.show();
     }
 
+    public void areYourSureAlert(final Context c, String mess,final String type){
+        AlertDialog alertDialog;
+
+        alertDialog = new AlertDialog.Builder(c).create();
+        alertDialog.setTitle("");
+        alertDialog.setMessage(mess);
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                makeGameOverAlert(c,"Do you want to record this game?",type);
+            }
+        });
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "NO", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void dialogMaker(final Context c, final String type) {
+        final Dialog dialog = new Dialog(c);
+        final gamestage screen = this;
+        //dialog.setTitle("Add a game");
+        dialog.setContentView(R.layout.dialog_add_game);
+        dialog.show();
+
+        final EditText name1 = (EditText) dialog.findViewById(R.id.name);
+        // final EditText date1 = (EditText)dialog.findViewById(R.id.date); for later
+        Button submit = (Button) dialog.findViewById(R.id.submit);
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
 
 
-    public void writeMovesToFile(){
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(c, name1.getText().toString(), Toast.LENGTH_SHORT).show();
+                screen.writeMovesToFile(name1.getText().toString(),type);
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(c, "Hit cancel", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+    }
+
+
+    public void writeMovesToFile(String fileName,String type){
+        System.out.println("writing to file: " +fileName);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MILLISECOND,0);
+        Date date= cal.getTime();
+        String dateStr= date.toString();
+
         try {
-            FileOutputStream fos = openFileOutput(this.fileName, this.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(fileName, this.MODE_PRIVATE);
             PrintWriter pw = new PrintWriter(fos);
+            int count =0;
             for(String m: moves){
+                System.out.println("Writing move "+count+": "+m);
+                count++;
                 pw.println(m);
             }
             pw.close();
             fos.close();
+            Home_Screen.addGame(fileName, dateStr,type);
         }catch(Exception e) {
             System.out.println("");
             e.printStackTrace();
         }
+
+        Home_Screen.writeGamesToFile(this);
+
+        this.fileName="temp";
     }
+
     public void readMovesFromFile(){
+        System.out.println("Reading from"+this.fileName);
         try {
             FileInputStream fis = openFileInput(this.fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));

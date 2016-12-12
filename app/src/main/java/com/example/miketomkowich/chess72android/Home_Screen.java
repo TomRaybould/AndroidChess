@@ -1,6 +1,7 @@
 package com.example.miketomkowich.chess72android;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,21 +23,31 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+
 public class Home_Screen extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private TextView mTextView;
     private static ListView listView;
-    public static ArrayList<Game> games;
+    public static ArrayList<Game> games=new ArrayList<>(10);
     private static final String MASTER_FILE = "MASTER_FILE_123";
 
-    public class Game{
+
+    public static class Game{
+
         private String name;
+        private String type;// this will hold the ending type of the game, draw, checkmate, slatemate, resign
         private String date;
 
-        Game(String na, String da){
+        public Game(String na, String da, String ty){
+            if(games==null){
+                games= new ArrayList<>(10);
+            }
             this.name=na;
             this.date=da;
+            this.type=ty;
+
         }
+
         //no need for set methods because these should never be changed after creation
         public String getName(){
             return this.name;
@@ -44,18 +55,43 @@ public class Home_Screen extends AppCompatActivity {
         public String getDate(){
             return this.date;
         }
-        public String toString(){
-            return this.name+'#'+this.date;
+        public String getType(){
+            return this.type;
+        }
+        public String toString(){return this.name+'#'+this.date+"#"+this.type;
         }
     }
 
+    public static void addGame(String name, String date, String type){
+        Game g= new Home_Screen.Game(name,date,type);
+
+        Game tar= null;
+        // replace old games with the same name with new ones
+        for (Game m: games){
+            if(m.name.equals(g.name)){
+                tar=m;
+            }
+        }
+        if(tar!=null){
+            games.remove(tar);
+            tar=null;
+        }
+        games.add(g);
+        for(Game m: games){
+            System.out.println(m);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         //Update this.games arraylist from sorted file
         this.readGamesFromFile();
+        games=null;
 
         setContentView(R.layout.activity_home__screen);
         Intent intent = getIntent();
@@ -173,11 +209,12 @@ public class Home_Screen extends AppCompatActivity {
         return true;
     }
 
-    public void writeGamesToFile(){
+    public static void writeGamesToFile(Context ctx){
         try {
-            FileOutputStream fos = openFileOutput(MASTER_FILE, this.MODE_PRIVATE);
+            FileOutputStream fos = ctx.openFileOutput(MASTER_FILE, ctx.MODE_PRIVATE);
             PrintWriter pw = new PrintWriter(fos);
             for(Game g: games){
+                System.out.println("Writing game to master"+ g);
                 pw.println(g);
             }
             pw.close();
@@ -196,8 +233,10 @@ public class Home_Screen extends AppCompatActivity {
             int count = 0;
             while((result=br.readLine())!=null){
                 String [] token = result.split("#");
-                if(token.length==2){
-                    this.games.add(new Game(token[0],token[1]));
+                if(token.length==3){
+                    Game g= new Game (token[0],token[1],token[2]);
+                    this.games.add(g);
+                    System.out.println("added from master file"+g);
                 }
                 else{
                     continue;
@@ -206,8 +245,7 @@ public class Home_Screen extends AppCompatActivity {
             br.close();
             fis.close();
         }catch(Exception e){
-            System.out.println("##############################");
-            e.printStackTrace();
+            System.out.println("READGAMESEXCEPTION");
         }
     }
 
