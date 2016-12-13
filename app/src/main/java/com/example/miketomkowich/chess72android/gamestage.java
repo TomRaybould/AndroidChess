@@ -53,11 +53,14 @@ public class gamestage extends AppCompatActivity {
                                         R.drawable.black_king_black_space,   R.drawable.black_king_white_space
     };
 
+    static final long [] blackPawns = {R.drawable.black_pawn_black_space,   R.drawable.black_pawn_white_space};
+    static final long [] whitePawns = {R.drawable.white_pawn_black_space,   R.drawable.white_pawn_white_space};
+
     static final long [] spaces      = {R.drawable.black_space,              R.drawable.white_space};
 
     private Chess game;
 
-    private ArrayList<String> moves= new ArrayList<>();
+    private static ArrayList<String> moves= new ArrayList<>();
 
     private String fileName = "Tommy";
 
@@ -67,7 +70,9 @@ public class gamestage extends AppCompatActivity {
         this.fileName=file;
     }
 
-    static boolean newGame=true;
+    static boolean newGame = true;
+
+    static boolean isPawnSelected;
 
 
     public Chess getGame(){
@@ -119,6 +124,7 @@ public class gamestage extends AppCompatActivity {
 
             if (newGame) {
                 this.game = new Chess(player1, player2, b);
+                moves = new ArrayList<String>();
                 newGame=false;
             }
             else{
@@ -141,7 +147,7 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
+                makeToast(""+position);
                 if(game.isGameOver){
                     makeToast("Game is over");
                     return;
@@ -155,15 +161,21 @@ public class gamestage extends AppCompatActivity {
                     } else if (game.currPlayer.getColor() == 'b') {
                         makeToast("Black's move");
                     }
+                    gamestage.isPawnSelected=false;
                 }
 
                 else if(move == null && isYourPiece(id)){//if your first selected piece is your color highlight it
-
                     selectedView = v;
                     v.setBackgroundColor(Color.rgb(0,255,255));
                     move = translateSpace(position);
                     while(move == null);
                     System.out.println("Move: "+move);
+                    if(isYourPawn(id)){
+                        gamestage.isPawnSelected = true;
+                    }
+                    else{
+                        gamestage.isPawnSelected = false;
+                    }
 
                 }
 
@@ -173,6 +185,12 @@ public class gamestage extends AppCompatActivity {
                     v.setBackgroundColor(Color.rgb(0,255,255));
                     move = translateSpace(position);
                     System.out.println("Move: "+move);
+                    if(isYourPawn(id)){
+                        gamestage.isPawnSelected = true;
+                    }
+                    else{
+                        gamestage.isPawnSelected = false;
+                    }
 
                 }
 
@@ -181,6 +199,16 @@ public class gamestage extends AppCompatActivity {
 
                     System.out.println("Move: "+move);
 
+                    if(game.currPlayer.getColor()=='w'){
+                        if (position >= 0 && position <= 7 && gamestage.isPawnSelected){
+                            //ask for a promotion type
+                        }
+                        else if(game.currPlayer.getColor()=='b'){
+                            if(position >= 56 && position <= 63 && gamestage.isPawnSelected){
+                                //ask for promotion type
+                            }
+                        }
+                    }
 
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
                         moves.add(move);//add the move if it is valid
@@ -340,6 +368,25 @@ public class gamestage extends AppCompatActivity {
         return false;
     }
 
+    public boolean isYourPawn(long id){
+        if (game.currPlayer.getColor() == 'w'){
+            for(long test : whitePawns){
+                if(test == id){
+                    return true;
+                }
+            }
+        }
+
+        else if(game.currPlayer.getColor() =='b'){
+            for(long test : blackPawns){
+                if(test == id){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void makeToast(String mess) {
         Toast.makeText(getApplicationContext(), mess, Toast.LENGTH_SHORT).show();
     }
@@ -405,6 +452,20 @@ public class gamestage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(c, name1.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                if(name1.getText().toString()==null || name1.getText().toString().length()==0){
+                    makeInfoAlert(c,"Invalid Name","You must give your saved game a name");
+                    return;
+                }
+                else{
+                    for(int i=0; i < name1.getText().toString().length(); i++){
+                        if(!Character.isAlphabetic(name1.getText().toString().charAt(i))){
+                            makeInfoAlert(c,"Invalid Name","Your name can only contain letters");
+                            return;
+                        }
+                    }
+                }
+
                 screen.writeMovesToFile(name1.getText().toString(),type);
                 dialog.dismiss();
             }
@@ -419,12 +480,31 @@ public class gamestage extends AppCompatActivity {
     }
 
 
+    public void makeInfoAlert(Context c, String title , String mess){
+        final AlertDialog alertDialog;
+
+        alertDialog = new AlertDialog.Builder(c).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(mess);
+
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
     public void writeMovesToFile(String fileName,String type){
         System.out.println("writing to file: " +fileName);
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MILLISECOND,0);
         Date date= cal.getTime();
         String dateStr= date.toString();
+        String arr[]= dateStr.split(" ");
+        dateStr= arr[1] + "," + arr[2] + " " + arr[5] + " " + arr[3].substring(0,5);
 
         try {
             FileOutputStream fos = openFileOutput(fileName, this.MODE_PRIVATE);

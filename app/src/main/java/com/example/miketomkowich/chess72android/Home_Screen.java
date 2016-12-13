@@ -58,7 +58,7 @@ public class Home_Screen extends AppCompatActivity {
         public String getType(){
             return this.type;
         }
-        public String toString(){return this.name+'#'+this.date+"#"+this.type;
+        public String toString(){ return this.name + '#' + this.date + "#" + this.type;
         }
     }
 
@@ -72,10 +72,12 @@ public class Home_Screen extends AppCompatActivity {
                 tar=m;
             }
         }
+
         if(tar!=null){
             games.remove(tar);
             tar=null;
         }
+
         games.add(g);
         for(Game m: games){
             System.out.println(m);
@@ -245,7 +247,7 @@ public class Home_Screen extends AppCompatActivity {
             br.close();
             fis.close();
         }catch(Exception e){
-            System.out.println("READGAMESEXCEPTION");
+            System.out.println("READ GAMES EXCEPTION");
         }
     }
 
