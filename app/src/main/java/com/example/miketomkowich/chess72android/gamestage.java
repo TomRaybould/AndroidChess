@@ -126,6 +126,7 @@ public class gamestage extends AppCompatActivity {
                 this.game = new Chess(player1, player2, b);
                 moves = new ArrayList<String>();
                 newGame=false;
+                move = null;
             }
             else{
                 this.game = Chess.currGame;
@@ -147,7 +148,7 @@ public class gamestage extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                makeToast(""+position);
+                System.out.println("is Pawn = "+gamestage.isPawnSelected);
                 if(game.isGameOver){
                     makeToast("Game is over");
                     return;
@@ -208,6 +209,7 @@ public class gamestage extends AppCompatActivity {
                                 //ask for promotion type
                             }
                         }
+                        gamestage.isPawnSelected=false;
                     }
 
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
@@ -240,7 +242,6 @@ public class gamestage extends AppCompatActivity {
                         if(game.playerWhite.isInCheck(game.board)){
                             makeToast("White is in Check");
                         }
-
 
                     }
                     else{
