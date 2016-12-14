@@ -188,7 +188,6 @@ public class gamestage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
 
-
                 if(isReplay == true){
                     if(game.isGameOver || gamestage.moveCounter >= moves.size()){
                         makeInfoAlert(v.getContext(),"No More Moves","The game ended here, Press bottom back arrow to exit");
@@ -271,7 +270,7 @@ public class gamestage extends AppCompatActivity {
 
                                 //ask for promotion type Black
 
-                                
+
 
                             }
                         }

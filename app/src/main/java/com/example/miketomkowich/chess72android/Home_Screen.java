@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class Home_Screen extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class Home_Screen extends AppCompatActivity {
     private static final String MASTER_FILE = "MASTER_FILE_123";
     private static View selectedView=null;
     private static String selectedGame=null;
+    private static Home_Screen currHome = null;
 
 
     public static class Game{
@@ -99,6 +101,7 @@ public class Home_Screen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Home_Screen.currHome = this;
         this.updateListView(games);
         if(selectedView!=null){
             selectedView.setBackgroundColor(Color.rgb(255,255,255));
@@ -110,6 +113,8 @@ public class Home_Screen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Home_Screen.currHome = this;
 
         setContentView(R.layout.activity_home__screen);
         Intent intent = getIntent();
@@ -127,6 +132,8 @@ public class Home_Screen extends AppCompatActivity {
         layout.addView(textView);
         Button replay = (Button) findViewById(R.id.replay);
         Button newGame = (Button) findViewById(R.id.new_game);
+        Button sortName = (Button) findViewById(R.id.nameSort);
+        Button sortDate = (Button) findViewById(R.id.dateSort);
 
         replay.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -150,9 +157,19 @@ public class Home_Screen extends AppCompatActivity {
                 sendMessage(v);
             }
         });
+        sortDate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                currHome.updateListView(Home_Screen.games);
+            }
+        });
+        sortName.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                currHome.sortByName();
+            }
+        });
     }
-
-
 
 
     public void sendMessage(View view) {
@@ -221,7 +238,7 @@ public class Home_Screen extends AppCompatActivity {
 
     public void updateListView(ArrayList<Game> gameArr){
 
-        if(gameArr==null){
+        if(gameArr == null || gameArr.size() <=0 ){
             System.out.println("GAMES ARRAY IS NULL");
             return;
         }
@@ -230,13 +247,13 @@ public class Home_Screen extends AppCompatActivity {
         int count=0;
 
         for(Game g : gameArr){
-            System.out.println("Game being add to veiw ");
+            System.out.println("Game being add to view "+g+" "+count);
             String str = g.date+" | "+ g.name+" | "+g.type;
             strArr[count]= str;
             count++;
         }
 
-        if(strArr[0]==null){
+        if(strArr == null||strArr[0] == null){
             System.out.println("GAMES ARRAY IS NULL");
             return;
         }
@@ -268,6 +285,35 @@ public class Home_Screen extends AppCompatActivity {
         );
 
     }
+
+    public void sortByName(){
+
+        if(games == null || games.get(0)==null){
+            return;
+        }
+
+        ArrayList<Game> gameCopy = new ArrayList<Game>();
+
+        for(Game g : Home_Screen.games){
+            gameCopy.add(g);
+        }
+
+        Comparator<Game> c= new Comparator<Game>() {
+            @Override
+            public int compare(Game game, Game t1) {
+                if(game == null || t1 == null){
+                    return 0;
+                }
+                return (game.name.compareToIgnoreCase(t1.name));
+            }
+        };
+
+        gameCopy.sort(c);
+
+        updateListView(gameCopy);
+
+    }
+
     public void makeInfoAlert(Context c, String title , String mess){
         final AlertDialog alertDialog;
 
