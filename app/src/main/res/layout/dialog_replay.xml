@@ -18,15 +18,15 @@
         android:id="@+id/statement" />
 
     <Button
-        android:text="Date"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/byDate" />
-
-    <Button
         android:text="Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/byName" />
+
+    <Button
+        android:text="Date"
+        android:layout_width="162dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/byDate" />
 
 </LinearLayout>

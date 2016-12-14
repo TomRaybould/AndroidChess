@@ -1,41 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_display_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New game"
-        android:onClick="sendMessage"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/new_game" />
-
-    <Button
-        android:text="replay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:id="@+id/replay" />
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/replay"
-        android:layout_alignStart="@+id/replay"
-        android:layout_marginTop="23dp"
-        android:id="@+id/listViewByName" />
+        android:id="@+id/listViewByName"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/dateSort"
+        android:layout_alignParentStart="true" />
 
     <Button
-        android:text="add game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="start a New game"
+        android:onClick="sendMessage"
+        android:id="@+id/new_game"
+        android:layout_marginTop="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Name Sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameSort"
+        android:layout_alignBaseline="@+id/replay"
+        android:layout_alignBottom="@+id/replay"
+        android:layout_toEndOf="@+id/new_game" />
+
+    <Button
+        android:text="Date Sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateSort"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/nameSort" />
+
+    <TextView
+        android:text="----OR----"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:textSize="18sp"
+        android:layout_above="@+id/nameSort"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp" />
+
+    <TextView
+        android:text="Recorded games"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        tools:text="Recorded games"
+        android:textSize="30sp"
         android:layout_above="@+id/listViewByName"
-        android:layout_alignEnd="@+id/new_game"
-        android:id="@+id/add_game" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="14dp" />
+
+    <Button
+        android:text="Replay an Old game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/replay"
+        android:layout_above="@+id/dateSort"
+        android:layout_alignStart="@+id/textView2" />
 
 </RelativeLayout>

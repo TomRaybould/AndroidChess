@@ -21,6 +21,7 @@ public class Chess implements Serializable{
 		protected boolean endGameWithResign;
 		protected Player currPlayer;
 		protected static Chess currGame;
+	    protected static int moveCount;
 
 	public Chess(Player white, Player black, Board b) {
 

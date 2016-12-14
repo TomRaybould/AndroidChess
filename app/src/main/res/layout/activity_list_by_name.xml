@@ -27,8 +27,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
         android:padding="90dp"
-        android:id="@+id/listViewByName" />
+        android:id="@+id/listViewByName"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbardate" />
 
 </RelativeLayout>

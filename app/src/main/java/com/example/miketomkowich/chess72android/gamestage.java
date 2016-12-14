@@ -31,6 +31,7 @@ import java.util.Date;
 import static android.view.Gravity.CENTER;
 
 public class gamestage extends AppCompatActivity {
+
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     private View selectedView;
@@ -53,35 +54,72 @@ public class gamestage extends AppCompatActivity {
                                         R.drawable.black_king_black_space,   R.drawable.black_king_white_space
     };
 
-    static final long [] blackPawns = {R.drawable.black_pawn_black_space,   R.drawable.black_pawn_white_space};
-    static final long [] whitePawns = {R.drawable.white_pawn_black_space,   R.drawable.white_pawn_white_space};
+    static final long [] blackPawns =  {R.drawable.black_pawn_black_space,   R.drawable.black_pawn_white_space};
+    static final long [] whitePawns =  {R.drawable.white_pawn_black_space,   R.drawable.white_pawn_white_space};
 
     static final long [] spaces      = {R.drawable.black_space,              R.drawable.white_space};
 
+
+
     private Chess game;
-
-    private static ArrayList<String> moves= new ArrayList<>();
-
-    private String fileName = "Tommy";
-
+    private static ArrayList<String> moves= new ArrayList<String>();
+    private static String fileName = "temp";
+    private static int moveCounter;
     private ImageAdapter gridImgApt;
+    private static boolean newGame = true;
+    private static boolean isPawnSelected = false;
+    private static boolean isReplay = false;
+    private static boolean isGamePlay = false;
+    private static gamestage currGamestage=null;
+
+    public static void setupReplayMode(String file){
+        Board b= new Board();
+        Player player1 = new Player(b,'w');
+        Player player2 = new Player(b,'b');
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
+        Chess game = new Chess(player1,player2,b);
+        Chess.currGame = game;
+        fileName = file;
+        gamestage.moveCounter = 0;
+        moves = new ArrayList<String>();
+        isPawnSelected = false;
+        isReplay= true;
+        isGamePlay=false;
+
+    }
+
+    public static void setupGamePlayMode(){
+        Board b= new Board();
+        Player player1 = new Player(b,'w');
+        Player player2 = new Player(b,'b');
+        player1.setOpponent(player2);
+        player2.setOpponent(player1);
+        Chess game = new Chess(player1,player2,b);
+        Chess.currGame = game;
+        fileName = "temp";
+        gamestage.moveCounter = 0;
+        moves = new ArrayList<String>();
+        isPawnSelected = false;
+        isReplay = false;
+        isGamePlay = true;
+    }
+
 
     public void setFile(String file){
         this.fileName=file;
     }
-
-    static boolean newGame = true;
-
-    static boolean isPawnSelected;
-
 
     public Chess getGame(){
         return this.game;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        this.readMovesFromFile();
+        gamestage.currGamestage=this;
+        if( isReplay == true ){
+            this.readMovesFromFile();
+            makeInfoAlert(this,"Replay Mode", "You are in replay mode tap anywhere on the board to see next moves");
+        }
 
         if (game_memory.launch()){
             Toast.makeText(getApplicationContext(), "Start of App", Toast.LENGTH_SHORT).show();
@@ -109,45 +147,61 @@ public class gamestage extends AppCompatActivity {
         );
         ab.setDisplayUseLogoEnabled(true);
         ab.setLogo(R.drawable.black_knight_black_space);
-        ab.setTitle("CHESS");
+        if(isGamePlay){
+            ab.setTitle("Chess");
+        }
+        if(isReplay){
+            ab.setTitle(gamestage.fileName);
+        }
         ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayUseLogoEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
 
-
-        //this will be set by the option the user picks in the previous screen
+        if(Chess.currGame==null){
+            System.out.println("CHESS CURR GAME WAS NULL");
             Board b= new Board();
-            Player player1= new Player(b,'w');
-            Player player2= new Player(b,'b');
+            Player player1 = new Player(b,'w');
+            Player player2 = new Player(b,'b');
             player1.setOpponent(player2);
             player2.setOpponent(player1);
-
-            if (newGame) {
-                this.game = new Chess(player1, player2, b);
-                moves = new ArrayList<String>();
-                newGame=false;
-                move = null;
-            }
-            else{
-                this.game = Chess.currGame;
-            }
+            Chess game = new Chess(player1,player2,b);
+            Chess.currGame = game;
+            this.game=Chess.currGame;
+        }
+        else{
+            this.game= Chess.currGame;
+        }
 
         setContentView(R.layout.activity_gamestage);
-            //  System.out.println("poop1");
+
+        this.game = Chess.currGame;//make in the setup function
+
         final GridView gridview = (GridView) findViewById(R.id.gridview);
-            // System.out.println("poop2");
-        System.out.println("poop3");
-        System.out.println(this.game);
+
         final ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
+
         this.gridImgApt= gameDrawer;
-        System.out.println("poop4");
+
         gridview.setAdapter(gameDrawer);
-        System.out.println("poop5");
-
-
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+
+
+                if(isReplay == true){
+                    if(game.isGameOver || gamestage.moveCounter >= moves.size()){
+                        makeInfoAlert(v.getContext(),"No More Moves","The game ended here, Press bottom back arrow to exit");
+                        return;
+                    }
+                    game.handleTurn(game.currPlayer,moves.get(moveCounter));
+                    gameDrawer.updateFromBackEnd(game.getBoard());
+                    game.currPlayer=game.currPlayer.getOpponent();
+                    gamestage.moveCounter++;
+                    System.out.println("moveCounter: "+gamestage.moveCounter+"Moves size: "+moves.size());
+                    return;
+                }
+
                 System.out.println("is Pawn = "+gamestage.isPawnSelected);
                 if(game.isGameOver){
                     makeToast("Game is over");
@@ -181,7 +235,9 @@ public class gamestage extends AppCompatActivity {
                 }
 
                 else if(move != null && isYourPiece(id)){//if you have a piece selected and pick another one of your piece just move the highlighter
-                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    if(selectedView!=null) {
+                        selectedView.setBackgroundColor(Color.rgb(0, 0, 0));
+                    }
                     selectedView = v;
                     v.setBackgroundColor(Color.rgb(0,255,255));
                     move = translateSpace(position);
@@ -202,11 +258,21 @@ public class gamestage extends AppCompatActivity {
 
                     if(game.currPlayer.getColor()=='w'){
                         if (position >= 0 && position <= 7 && gamestage.isPawnSelected){
-                            //ask for a promotion type
+
+
+                            //ask for a promotion type White
+
+
+
                         }
                         else if(game.currPlayer.getColor()=='b'){
                             if(position >= 56 && position <= 63 && gamestage.isPawnSelected){
-                                //ask for promotion type
+
+
+                                //ask for promotion type Black
+
+                                
+
                             }
                         }
                         gamestage.isPawnSelected=false;
@@ -214,7 +280,9 @@ public class gamestage extends AppCompatActivity {
 
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
                         moves.add(move);//add the move if it is valid
-                        selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                        if(selectedView!=null) {
+                            selectedView.setBackgroundColor(Color.rgb(0, 0, 0));
+                        }
                         selectedView = null;
                         move = null;
                         System.out.println("move when thru");
@@ -245,7 +313,9 @@ public class gamestage extends AppCompatActivity {
 
                     }
                     else{
-                        selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                        if(selectedView!=null) {
+                            selectedView.setBackgroundColor(Color.rgb(0, 0, 0));
+                        }
                         selectedView = null;
                         move = null;
                         makeToast("Invalid move");
@@ -261,12 +331,21 @@ public class gamestage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_gamestage, menu);
+        if(isGamePlay == true && !game.isGameOver) {
+            menuInflater.inflate(R.menu.menu_gamestage, menu);
+        }
+        else if(isReplay){
+
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        if(game.isGameOver){
+            makeInfoAlert(this,"The Game is Over","You cannot perform anymore actions, click the bottom left arrow to exit");
+            return true;
+        }
         int id = item.getItemId();
         if(id == R.id.ai) {
             move = null;
@@ -291,7 +370,7 @@ public class gamestage extends AppCompatActivity {
         }
         else if(id == R.id.undo){
             System.out.println(moves);
-            if( moves == null || moves.size()==0 ||moves.get(0)==null){
+            if( moves == null || moves.size()==0 || moves.get(0) == null){
                 makeToast("No moves to undo");
                 return true;
             }
@@ -401,16 +480,21 @@ public class gamestage extends AppCompatActivity {
         alertDialog.setMessage(mess);
         final gamestage stage= this;
 
+
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 stage.dialogMaker(c, type);
+                Chess.currGame.isGameOver=true;
                 alertDialog.dismiss();
             }
         });
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"No Thanks", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                Chess.currGame.isGameOver=true;
+                makeInfoAlert(c,"The Game is Over","You cannot perform any more actions, click the bottom left arrow to exit");
             }
+
         });
         alertDialog.show();
     }
@@ -435,6 +519,7 @@ public class gamestage extends AppCompatActivity {
         alertDialog.show();
     }
 
+
     public void dialogMaker(final Context c, final String type) {
         final Dialog dialog = new Dialog(c);
         final gamestage screen = this;
@@ -446,8 +531,6 @@ public class gamestage extends AppCompatActivity {
         // final EditText date1 = (EditText)dialog.findViewById(R.id.date); for later
         Button submit = (Button) dialog.findViewById(R.id.submit);
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
-
-
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -465,6 +548,7 @@ public class gamestage extends AppCompatActivity {
                             return;
                         }
                     }
+                    makeInfoAlert(v.getContext(),"The Game is Over","Your game was saved under the name: "+name1.getText().toString());
                 }
 
                 screen.writeMovesToFile(name1.getText().toString(),type);
@@ -476,6 +560,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(c, "Hit cancel", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
+                makeInfoAlert(v.getContext(),"The Game is Over","You cannot perform any more actions, click the bottom left arrow to exit");
             }
         });
     }
@@ -532,6 +617,7 @@ public class gamestage extends AppCompatActivity {
     public void readMovesFromFile(){
         System.out.println("Reading from"+this.fileName);
         try {
+            moves=new ArrayList<String>();
             FileInputStream fis = openFileInput(this.fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis));
             String result = null;
@@ -539,6 +625,7 @@ public class gamestage extends AppCompatActivity {
             while((result=br.readLine())!=null){
                 count ++;
                 System.out.println("Move "+count+": "+result);
+                moves.add(result);
             }
             br.close();
             fis.close();
