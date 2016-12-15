@@ -1,7 +1,6 @@
 package com.example.miketomkowich.chess72android;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +34,8 @@ public class Home_Screen extends AppCompatActivity {
     private static ListView listView;
     public static ArrayList<Game> games=new ArrayList<>(10);
     private static final String MASTER_FILE = "MASTER_FILE_123";
-    private static View selectedView=null;
-    private static String selectedGame=null;
+    private static View selectedView = null;
+    private static String selectedGame = null;
     private static Home_Screen currHome = null;
 
 
@@ -124,7 +122,7 @@ public class Home_Screen extends AppCompatActivity {
         textView.setText(message);
 
         //Update this.games arraylist from sorted file
-        games=null;
+        games = null;
         this.readGamesFromFile();
         this.updateListView(games);
 

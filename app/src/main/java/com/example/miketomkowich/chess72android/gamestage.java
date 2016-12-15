@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -66,11 +67,11 @@ public class gamestage extends AppCompatActivity {
     private static String fileName = "temp";
     private static int moveCounter;
     private ImageAdapter gridImgApt;
-    private static boolean newGame = true;
     private static boolean isPawnSelected = false;
     private static boolean isReplay = false;
     private static boolean isGamePlay = false;
     private static gamestage currGamestage=null;
+    private String promotion=null;
 
     public static void setupReplayMode(String file){
         Board b= new Board();
@@ -174,6 +175,7 @@ public class gamestage extends AppCompatActivity {
 
         setContentView(R.layout.activity_gamestage);
 
+
         this.game = Chess.currGame;//make in the setup function
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -198,6 +200,14 @@ public class gamestage extends AppCompatActivity {
                     game.currPlayer=game.currPlayer.getOpponent();
                     gamestage.moveCounter++;
                     System.out.println("moveCounter: "+gamestage.moveCounter+"Moves size: "+moves.size());
+                    return;
+                }
+
+                if(move!=null && move.length()>=3){
+                    move= null;
+                    if(gamestage.this.selectedView!=null){
+                        gamestage.this.selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    }
                     return;
                 }
 
@@ -254,27 +264,22 @@ public class gamestage extends AppCompatActivity {
                     move += " "+ translateSpace(position);
 
                     System.out.println("Move: "+move);
+                    System.out.println("currPlayer "+game.currPlayer.getColor()+"position: "+position+isPawnSelected);
 
-                    if(game.currPlayer.getColor()=='w'){
-                        if (position >= 0 && position <= 7 && gamestage.isPawnSelected){
-
-
-                            //ask for a promotion type White
-
-
-
+                    if(game.currPlayer.getColor()=='w') {
+                        if (position >= 0 && position <= 7 && gamestage.isPawnSelected) {
+                            gamestage.this.promotionDialogMakerWhite(v.getContext());
+                            gamestage.isPawnSelected = false;
+                            return;
                         }
-                        else if(game.currPlayer.getColor()=='b'){
-                            if(position >= 56 && position <= 63 && gamestage.isPawnSelected){
-
-
-                                //ask for promotion type Black
-
-
-
-                            }
+                    }
+                    else if(game.currPlayer.getColor()=='b'){
+                        System.out.print("black prom");
+                        if(position >= 56 && position <= 63 && gamestage.isPawnSelected){
+                            gamestage.this.promotionDialogMakerBlack(v.getContext());
+                            gamestage.isPawnSelected=false;
+                            return;
                         }
-                        gamestage.isPawnSelected=false;
                     }
 
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
@@ -560,6 +565,180 @@ public class gamestage extends AppCompatActivity {
                 Toast.makeText(c, "Hit cancel", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
                 makeInfoAlert(v.getContext(),"The Game is Over","You cannot perform any more actions, click the bottom left arrow to exit");
+            }
+        });
+    }
+
+    public void promotionDialogMakerBlack(final Context c) {
+        final Dialog dialog = new Dialog(c);
+        final gamestage screen = this;
+        //dialog.setTitle("Add a game");
+
+        dialog.setContentView(R.layout.dialog_black_promotion);
+
+        dialog.show();
+
+        ImageButton Rook = (ImageButton) dialog.findViewById(R.id.blackRookProm);
+        ImageButton Queen = (ImageButton) dialog.findViewById(R.id.blackQueenProm);
+        ImageButton Bishop = (ImageButton) dialog.findViewById(R.id.blackBishopProm);
+        ImageButton Knight = (ImageButton) dialog.findViewById(R.id.blackKnightProm);
+
+
+        Queen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" Q";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+            }
+        });
+        Rook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" R";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+
+            }
+        });
+        Knight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" N";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+            }
+        });
+        Bishop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" B";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    public void promotionDialogMakerWhite(final Context c) {
+        final Dialog dialog = new Dialog(c);
+        final gamestage screen = this;
+        //dialog.setTitle("Add a game");
+
+        dialog.setContentView(R.layout.dialog_white_promotion);
+
+        dialog.show();
+
+        ImageButton Rook = (ImageButton) dialog.findViewById(R.id.whiteRookProm);
+        ImageButton Queen = (ImageButton) dialog.findViewById(R.id.whiteQueenProm);
+        ImageButton Bishop = (ImageButton) dialog.findViewById(R.id.whiteBishopProm);
+        ImageButton Knight = (ImageButton) dialog.findViewById(R.id.whiteKnightProm);
+
+
+        Queen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" Q";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+            }
+        });
+        Rook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" R";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+
+            }
+        });
+        Knight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" N";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+            }
+        });
+        Bishop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamestage.move+=" B";
+                if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
+                    Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
+                }
+                gamestage.move=null;
+                System.out.println(gamestage.move);
+                if(gamestage.this.selectedView!=null){
+                    selectedView.setBackgroundColor(Color.rgb(0,0,0));
+                    selectedView=null;
+                }
+                dialog.dismiss();
+
             }
         });
     }
