@@ -172,7 +172,7 @@ public class Home_Screen extends AppCompatActivity {
 
     public void sendMessage(View view) {
         // Do something in response to button
-        Toast.makeText(getApplicationContext(), "switch screen was called", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "switch screen was called", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, gamestage.class);
         String message = "Back to gamestage";
         intent.putExtra(EXTRA_MESSAGE, message);

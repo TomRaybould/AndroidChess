@@ -187,6 +187,7 @@ public class gamestage extends AppCompatActivity {
                         makeInfoAlert(v.getContext(),"No More Moves","The game ended here, Press bottom back arrow to exit");
                         return;
                     }
+                    System.out.println(moves.get(moveCounter));
                     game.handleTurn(game.currPlayer,moves.get(moveCounter));
                     gameDrawer.updateFromBackEnd(game.getBoard());
                     game.currPlayer=game.currPlayer.getOpponent();
@@ -275,15 +276,15 @@ public class gamestage extends AppCompatActivity {
                     }
 
                     if(game.handleTurn(game.currPlayer,move)){//the move was valid
-                        moves.add(move);//add the move if it is valid
+                        gamestage.moves.add(move);//add the move if it is valid
+                        game.currPlayer=game.currPlayer.getOpponent();
                         if(selectedView!=null) {
                             selectedView.setBackgroundColor(Color.rgb(0, 0, 0));
                         }
                         selectedView = null;
                         move = null;
                         System.out.println("move when thru");
-                        gameDrawer.updateFromBackEnd(game.getBoard());
-                        game.currPlayer=game.currPlayer.getOpponent();
+                        gamestage.this.gridImgApt.updateFromBackEnd(game.getBoard());
 
                         if(game.playerBlack.isInCheckMate(game.board)){
                             makeGameOverAlert(v.getContext(),"Checkmate White Wins!!!\nDo you want to record this game?","Checkmate");
@@ -315,14 +316,12 @@ public class gamestage extends AppCompatActivity {
                         selectedView = null;
                         move = null;
                         makeToast("Invalid move");
+                        return;
                     }
                 }
             }
         });
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -581,6 +580,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" Q";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -598,6 +598,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" R";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -616,6 +617,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" N";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -633,6 +635,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" B";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -668,6 +671,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" Q";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -685,6 +689,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" R";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -703,6 +708,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" N";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
@@ -720,6 +726,7 @@ public class gamestage extends AppCompatActivity {
             public void onClick(View v) {
                 gamestage.move+=" B";
                 if (Chess.currGame.handleTurn(gamestage.this.game.currPlayer,gamestage.move)){
+                    gamestage.moves.add(gamestage.move);
                     gamestage.this.gridImgApt.updateFromBackEnd(Chess.currGame.getBoard());
                     Chess.currGame.currPlayer = Chess.currGame.currPlayer.getOpponent();
                 }
