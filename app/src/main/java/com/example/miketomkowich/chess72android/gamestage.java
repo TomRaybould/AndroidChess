@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import static android.view.Gravity.CENTER;
 
@@ -344,12 +345,13 @@ public class gamestage extends AppCompatActivity {
             makeInfoAlert(this,"The Game is Over","You cannot perform anymore actions, click the bottom left arrow to exit");
             return true;
         }
+        Random rand = new Random();
         int id = item.getItemId();
         if(id == R.id.ai) {
             move = null;
-            for (int i = 0; i <= 64; i++) {
+            for (int i = 0; i <= 63; i=rand.nextInt(64)) {
                     move = translateSpace(i);
-                for(int j = 0; j <= 64;j++){
+                for(int j = 0; j <= 63;j++){
                     String tryMove= move+" "+translateSpace(j);
                     System.out.println("AI move try: "+tryMove);
                     if(game.handleTurn(this.game.currPlayer,tryMove)){
