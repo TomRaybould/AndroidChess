@@ -188,6 +188,9 @@ public class gamestage extends AppCompatActivity {
                         return;
                     }
                     System.out.println(moves.get(moveCounter));
+                    if(moves.get(moveCounter).equals("undo")){
+                        makeToast("undo");
+                    }
                     game.handleTurn(game.currPlayer,moves.get(moveCounter));
                     gameDrawer.updateFromBackEnd(game.getBoard());
                     game.currPlayer=game.currPlayer.getOpponent();
