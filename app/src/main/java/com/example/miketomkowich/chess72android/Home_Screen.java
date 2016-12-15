@@ -158,7 +158,7 @@ public class Home_Screen extends AppCompatActivity {
         sortDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                currHome.updateListView(Home_Screen.games);
+                currHome.sortByDate();
             }
         });
         sortName.setOnClickListener(new View.OnClickListener(){
@@ -311,6 +311,24 @@ public class Home_Screen extends AppCompatActivity {
         updateListView(gameCopy);
 
     }
+
+
+    public void sortByDate(){
+
+        if(games == null || games.get(0)==null){
+            return;
+        }
+
+        ArrayList<Game> gameCopy = new ArrayList<Game>();
+
+        for(int i= games.size()-1; i>=0; i--){
+            gameCopy.add(games.get(i));
+        }
+
+        updateListView(gameCopy);
+
+    }
+
 
     public void makeInfoAlert(Context c, String title , String mess){
         final AlertDialog alertDialog;
