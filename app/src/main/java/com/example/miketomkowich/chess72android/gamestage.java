@@ -1,9 +1,9 @@
 package com.example.miketomkowich.chess72android;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,16 +17,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 
 import java.io.BufferedReader;
-import java.util.Calendar;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.view.Gravity.CENTER;
@@ -122,12 +120,6 @@ public class gamestage extends AppCompatActivity {
             makeInfoAlert(this,"Replay Mode", "You are in replay mode tap anywhere on the board to see next moves");
         }
 
-        if (game_memory.launch()){
-            Toast.makeText(getApplicationContext(), "Start of App", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, Home_Screen.class);
-            startActivity(intent);
-
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gamestage);
 
