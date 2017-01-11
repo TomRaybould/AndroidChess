@@ -1,6 +1,8 @@
 # README #
 
-A group project by Tom Raybould & Mike Tomkowich for Rutgers CS 213
+A group project by Tom Raybould & Mike Tomkowich for Rutgers CS 213, made in Android Studio.
+
+Screen shots of this app can be seen in the ScreenShots folder of the project.
 
 - This project is a chess app for andriod phones, where two people can play against each other on one phone. 
 
