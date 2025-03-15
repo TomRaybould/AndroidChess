@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.tomraybould_miketomkowich.chess72android.R;
+
 public class list_by_date extends AppCompatActivity {
 
     @Override

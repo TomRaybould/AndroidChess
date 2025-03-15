@@ -30,6 +30,8 @@ import java.util.Random;
 
 import static android.view.Gravity.CENTER;
 
+import com.example.tomraybould_miketomkowich.chess72android.R;
+
 public class gamestage extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tomraybould_miketomkowich.chess72android.R;
+
 public class Completed_Game extends AppCompatActivity {
 
     @Override

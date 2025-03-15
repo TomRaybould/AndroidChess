@@ -11,6 +11,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.graphics.Color;
 
+import com.example.tomraybould_miketomkowich.chess72android.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
