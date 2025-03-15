@@ -7,15 +7,18 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -174,6 +177,14 @@ public class gamestage extends AppCompatActivity {
         this.game = Chess.currGame;//make in the setup function
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
+
+        gridview.post(
+                () -> {
+                    int measuredWidth = gridview.getMeasuredWidth();
+                    gridview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, measuredWidth));
+                    gridview.setGravity(CENTER);
+                }
+        );
 
         final ImageAdapter gameDrawer=new ImageAdapter(this, this.game);
 
